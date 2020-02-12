@@ -6,12 +6,12 @@
 #    By: pcharrie <pcharrie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/07/16 11:23:33 by frossiny          #+#    #+#              #
-#    Updated: 2020/02/12 17:57:35 by lubenard         ###   ########.fr        #
+#    Updated: 2020/02/12 23:27:49 by lubenard         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC		=	clang
-CFLAGS	+=	-Wall -Werror -Wextra -g3
+CFLAGS	+=	-Wall -Werror -Wextra
 
 SHELL	=	bash
 

@@ -6,42 +6,42 @@
 #    By: lubenard <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/12 18:13:02 by lubenard          #+#    #+#              #
-#    Updated: 2020/02/12 19:08:23 by lubenard         ###   ########.fr        #
+#    Updated: 2020/02/12 23:55:44 by lubenard         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CC		= clang
-CFLAGS	= -Wall -Wextra -Werror
+CC			= clang
+CFLAGS		= -Wall -Wextra -Werror
 
-NAME	= fdf
-LIBFT	= libft
-SRCSDIR	= srcs
-INCDIR	= includes
-OBJSDIR	= objs
+NAME		= fdf
+LIBFT		= libft
+LIBX_UNIX	= minilibx/unix
+LIBX_SIERRA	= minilibx/sierra
+LIBX_MOJAVE	= minilibx/mojave
+SRCSDIR		= srcs
+INCDIR		= includes
+OBJSDIR		= objs
 
-FILES	=	main.c
+FILES		= main.c
 
-SRCS	=	$(addprefix $(SRCSDIR)/, $(FILES))
-OBJS	=	$(SRCS:$(SRCSDIR)/%.c=$(OBJSDIR)/%.o)
-OBJSD	=	$(SRCS:$(SRCSDIR)/%.c=$(OBJSDIR)/%.d)
+SRCS		= $(addprefix $(SRCSDIR)/, $(FILES))
+OBJS		= $(SRCS:$(SRCSDIR)/%.c=$(OBJSDIR)/%.o)
+OBJSD		= $(SRCS:$(SRCSDIR)/%.c=$(OBJSDIR)/%.d)
 
-.PHONY: all clean fclean re norm tests $(LIBFT)
-
-.SILENT:
 
 ##### Colors #####
-_END=\x1b[0m
-_BOLD=\x1b[1m
-_UNDER=\x1b[4m
-_REV=\x1b[7m
-_GREY=\x1b[30m
-_RED=\x1b[31m
-_GREEN=\x1b[32m
-_YELLOW=\x1b[33m
-_BLUE=\x1b[34m
-_PURPLE=\x1b[35m
-_CYAN=\x1b[36m
-_WHITE=\x1b[37m
+_END		= \x1b[0m
+_BOLD		= \x1b[1m
+_UNDER		= \x1b[4m
+_REV		= \x1b[7m
+_GREY		= \x1b[30m
+_RED		= \x1b[31m
+_GREEN		= \x1b[32m
+_YELLOW		= \x1b[33m
+_BLUE		= \x1b[34m
+_PURPLE		= \x1b[35m
+_CYAN		= \x1b[36m
+_WHITE		= \x1b[37m
 
 all: $(NAME)
 
@@ -51,7 +51,7 @@ $(NAME): $(OBJS)
 	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L./$(LIBFT)
 	@echo -e "\n${_GREEN}${_BOLD}$(NAME) done.${_END}"
 
-$(OBJDIR)/%.o: $(SRCSDIR)/%.c Makefile
+$(OBJSDIR)/%.o: $(SRCSDIR)/%.c Makefile
 	@mkdir -p $(@D)
 	@echo -n -e "\r\033[K${_PURPLE}${BOLD}[${NAME}] Compiling $<${_END}"
 	@$(CC) $(CFLAGS) -I $(INCDIR) -I $(LIBFT)/$(INCDIR) -MMD -o $@ -c $<
@@ -69,6 +69,9 @@ clean:
 
 fclean: clean
 	@$(MAKE) -C $(LIBFT) fclean
+	@$(MAKE) -C $(LIBX_UNIX) clean
+	@$(MAKE) -C $(LIBX_SIERRA) clean
+	@$(MAKE) -C $(LIBX_MOJAVE) clean
 	@echo -e "${_RED}${_BOLD}Cleaning project...${_END}"
 	@rm -f $(NAME)
 	@rm -rf $(OBJDIR)
@@ -84,5 +87,12 @@ norm:
 check_error:
 	@grep -rn "printf" srcs | grep -v "ft_"
 	@grep -rn "stdio.h" srcs
+
+unix: all
+	make -q -C $(LIBX_UNIX) || $(MAKE) -C $(LIBX_UNIX)
+
+.PHONY: all clean fclean re norm tests $(LIBFT)
+
+.SILENT:
 
 -include $(OBJSD)
