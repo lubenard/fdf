@@ -6,12 +6,16 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 11:03:08 by lubenard          #+#    #+#             */
-/*   Updated: 2020/02/13 12:32:40 by lubenard         ###   ########.fr       */
+/*   Updated: 2020/02/13 19:38:45 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include <fcntl.h>
+
+/*
+** Create new element of linked list
+*/
 
 t_map_lst	*create_new_elem(void)
 {
@@ -29,11 +33,36 @@ t_map_lst	*create_new_elem(void)
 	return (elem);
 }
 
-int		insert_line(t_map *map, char *line)
+/*
+** Insert character into linked list
+*/
+
+int		insert_char(t_map *map, char *lines, size_t x, size_t y)
+{
+	t_map_lst *map_elem;
+
+	map_elem = create_new_elem();
+	if (!(map_elem->alt = ft_atoi(lines)))
+	{
+		ft_dprintf(2, "Apparently, %s is not a valid integer\n", lines);
+		return (1);
+	}
+	map_elem->x = x;
+	map_elem->y = y;
+	return (0);
+}
+
+/*
+** Split line via spaces before insertion into linked list
+*/
+
+int		format_line(t_map *map, char *line)
 {
 	char		**splitted_line;
 	static int	i = 0;
+	int			j;
 
+	j = 0;
 	if (!i)
 	{
 		map->lst = create_new_elem();
@@ -41,9 +70,14 @@ int		insert_line(t_map *map, char *line)
 		i++;
 	}
 	splitted_line = ft_strsplit(line, ' ');
-	//while 
+	while (splitted_line[j])
+		insert_char(fdf, splitted_line[j++], j, 0);
 	return (0);
 }
+
+/*
+** Will read the file passed in argument
+*/
 
 int		get_map(t_fdf *fdf, int nbr_files, char **files)
 {
@@ -61,8 +95,9 @@ int		get_map(t_fdf *fdf, int nbr_files, char **files)
 		if (!(fdf = malloc(sizeof(t_fdf)))
 		|| !(fdf->map = malloc(sizeof(t_map))))
 			return (1);
+		//check_map();
 		while (get_next_line(fd, &lines) > 0)
-			insert_line(fdf->map, lines);
+			format_line(fdf->map, lines);
 		close(fd);
 		return (0);
 	}
