@@ -6,13 +6,12 @@
 #    By: lubenard <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/12 18:13:02 by lubenard          #+#    #+#              #
-#    Updated: 2020/02/12 23:55:44 by lubenard         ###   ########.fr        #
+#    Updated: 2020/02/13 16:51:27 by lubenard         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC			= clang
 CFLAGS		= -Wall -Wextra -Werror
-
 NAME		= fdf
 LIBFT		= libft
 LIBX_UNIX	= minilibx/unix
@@ -22,12 +21,17 @@ SRCSDIR		= srcs
 INCDIR		= includes
 OBJSDIR		= objs
 
-FILES		= main.c
+FILES		= main.c \
+			  get_map.c \
+			  mlx.c
+
 
 SRCS		= $(addprefix $(SRCSDIR)/, $(FILES))
 OBJS		= $(SRCS:$(SRCSDIR)/%.c=$(OBJSDIR)/%.o)
 OBJSD		= $(SRCS:$(SRCSDIR)/%.c=$(OBJSDIR)/%.d)
 
+UNIX 		= false
+MAC			= false
 
 ##### Colors #####
 _END		= \x1b[0m
@@ -45,11 +49,37 @@ _WHITE		= \x1b[37m
 
 all: $(NAME)
 
+ifeq ($(UNIX), true)
+all: $(OBJS) unix_compil
+endif
+
+ifeq ($(SIERRA), true)
+all: $(OBJS) sierra_compil
+endif
+
+ifeq ($(MOJAVE), true)
+all: $(OBJS) mojave_compil
+endif
+
+
 $(NAME): $(OBJS)
 	@$(MAKE) -q -C $(LIBFT) || $(MAKE) -j4 -C $(LIBFT)
 	@echo -e -n "\n${_BLUE}${_BOLD}[Create Executable] $(NAME)${_END}"
-	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L./$(LIBFT)
+	@make -j4 -C $(LIBX_SIERRA)
+	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L./$(LIBFT) -lft -L ./$(LIBX_SIERRA) -lmlx -framework OpenGL -framework AppKit
 	@echo -e "\n${_GREEN}${_BOLD}$(NAME) done.${_END}"
+
+unix_compil:
+	@make -j4 -C $(LIBX_UNIX)
+	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L $(LIBFT) -lft -L ./$(LIBX_UNIX) -lmlx -lXext -lX11
+
+mojave_compil:
+	@make -j4 -C $(LIBX_MOJAVE)
+	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L $(LIBFT) -lft -L ./$(LIBX_MOJAVE) -lmlx -framework OpenGL -framework AppKit
+
+sierra_compil:
+	@make -j4 -C $(LIBX_SIERRA)
+	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L $(LIBFT) -lft -L ./$(LIBX_SIERRA) -lmlx -framework OpenGL -framework AppKit
 
 $(OBJSDIR)/%.o: $(SRCSDIR)/%.c Makefile
 	@mkdir -p $(@D)
@@ -62,7 +92,7 @@ libft:
 
 clean:
 	@$(MAKE) -C $(LIBFT) clean
-	@echo -e "${_RED}${_BOLD}Cleaning obj files...${_END}"
+	@echo "${_RED}${_BOLD}Cleaning obj files...${_END}"
 	@rm -f $(OBJS)
 	@rm -f $(OBJSD)
 	@rm -Rf $(OBJDIR)
@@ -72,7 +102,7 @@ fclean: clean
 	@$(MAKE) -C $(LIBX_UNIX) clean
 	@$(MAKE) -C $(LIBX_SIERRA) clean
 	@$(MAKE) -C $(LIBX_MOJAVE) clean
-	@echo -e "${_RED}${_BOLD}Cleaning project...${_END}"
+	@echo "${_RED}${_BOLD}Cleaning project...${_END}"
 	@rm -f $(NAME)
 	@rm -rf $(OBJDIR)
 	@rm -rf $(NAME).dSYM
@@ -89,7 +119,7 @@ check_error:
 	@grep -rn "stdio.h" srcs
 
 unix: all
-	make -q -C $(LIBX_UNIX) || $(MAKE) -C $(LIBX_UNIX)
+	@make -q -C $(LIBX_UNIX) || $(MAKE) -C $(LIBX_UNIX)
 
 .PHONY: all clean fclean re norm tests $(LIBFT)
 

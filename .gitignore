@@ -7,3 +7,5 @@ fdf
 vgcore.*
 *.swp
 *.gen
+*.dSYM
+*.swiftdoc
