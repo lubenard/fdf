@@ -32,7 +32,8 @@ int		init_mlx(t_fdf *fdf)
 {
 	if (!(fdf->mlx_ptr = mlx_init()))
 		return (1);
-	fdf->mlx_win = mlx_new_window(fdf->mlx_ptr, 1080, 720, "Fil de fer (aka fdf)");
+	fdf->mlx_win = mlx_new_window(fdf->mlx_ptr, WIN_WIDTH, WIN_HEIGHT,
+	"Fil de fer (aka fdf)");
 	mlx_key_hook(fdf->mlx_win, escape_key, fdf);
 	mlx_loop(fdf->mlx_ptr);
 	return (0);

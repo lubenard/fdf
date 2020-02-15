@@ -11,8 +11,24 @@
 /* ************************************************************************** */
 
 #include "fdf.h"
+#include <mlx.h>
 
+/*
+** Create new image and set it ready to draw
+*/
+
+int		init_image(t_fdf *fdf)
+{
+	mlx_new_image(fdf->mlx_ptr, WIN_WIDTH, WIN_HEIGHT);
+
+	return (0);
+}
+
+/*
+** Handle image creation and drawing
+*/
 int		draw(t_fdf *fdf)
 {
+	init_image(fdf);
 	return (0);
 }

@@ -11,7 +11,8 @@
 # **************************************************************************** #
 
 CC			= clang
-CFLAGS		= -Wall -Wextra -Werror
+CFLAGS		= -Wall -Wextra -Werror -g3
+
 NAME		= fdf
 LIBFT		= libft
 LIBX_UNIX	= minilibx/unix
@@ -23,12 +24,14 @@ OBJSDIR		= objs
 
 FILES		= main.c \
 			  get_map.c \
-			  mlx.c
-
+			  init_mlx.c \
+			  init_structs.c
 
 SRCS		= $(addprefix $(SRCSDIR)/, $(FILES))
 OBJS		= $(SRCS:$(SRCSDIR)/%.c=$(OBJSDIR)/%.o)
 OBJSD		= $(SRCS:$(SRCSDIR)/%.c=$(OBJSDIR)/%.d)
+
+##### Cross compil #####
 
 UNIX 		= false
 MAC			= false
@@ -47,7 +50,15 @@ _PURPLE		= \x1b[35m
 _CYAN		= \x1b[36m
 _WHITE		= \x1b[37m
 
+##### Debug #####
+
+FSANITIZE	= false
+
 all: $(NAME)
+
+ifeq ($(FSANITIZE), true)
+CFLAGS += -fsanitize=address
+endif
 
 ifeq ($(UNIX), true)
 all: $(OBJS) unix_compil

@@ -16,6 +16,9 @@
 #include "../libft/includes/ft_printf.h"
 #include "../libft/includes/get_next_line.h"
 
+# define WIN_WIDTH 1080
+# define WIN_HEIGHT 720
+
 typedef struct			s_map_lst
 {
 	int					x;
@@ -23,8 +26,8 @@ typedef struct			s_map_lst
 	int					alt;
 	struct s_map_lst	*up;
 	struct s_map_lst	*down;
-	struct s_map_lst	*right;
-	struct s_map_lst	*left;
+	struct s_map_lst	*next;
+	struct s_map_lst	*prev;
 }						t_map_lst;
 
 typedef struct			s_map
@@ -41,7 +44,24 @@ typedef struct			s_fdf
 	struct s_map		*map;
 }						t_fdf;
 
+/*
+** init structs
+*/
+
+t_fdf					*init_fdf_structs(void);
+t_map_lst				*create_new_elem(void);
+
+/*
+** Get map
+*/
+
 int						get_map(t_fdf *fdf, int nbr_files, char **files);
+
+/*
+** MLX part
+*/
+
 int						init_mlx(t_fdf *fdf);
 void					free_structs(t_fdf *fdf);
+
 # endif
