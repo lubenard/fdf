@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 11:58:55 by lubenard          #+#    #+#             */
-/*   Updated: 2020/02/13 17:36:36 by lubenard         ###   ########.fr       */
+/*   Updated: 2020/02/16 16:36:26 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,12 @@ int		escape_key(int keycode, void *param)
 
 int		init_mlx(t_fdf *fdf)
 {
+	ft_printf("fdf is %p and mlx_ptr %p\n", fdf, fdf->mlx_ptr);
 	if (!(fdf->mlx_ptr = mlx_init()))
 		return (1);
 	fdf->mlx_win = mlx_new_window(fdf->mlx_ptr, WIN_WIDTH, WIN_HEIGHT,
 	"Fil de fer (aka fdf)");
 	mlx_key_hook(fdf->mlx_win, escape_key, fdf);
-	mlx_loop(fdf->mlx_ptr);
+	//mlx_loop(fdf->mlx_ptr); //need to be set after image draw
 	return (0);
 }

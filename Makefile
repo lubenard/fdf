@@ -6,7 +6,7 @@
 #    By: lubenard <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/12 18:13:02 by lubenard          #+#    #+#              #
-#    Updated: 2020/02/13 16:51:27 by lubenard         ###   ########.fr        #
+#    Updated: 2020/02/16 16:47:35 by lubenard         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,9 @@ OBJSDIR		= objs
 FILES		= main.c \
 			  get_map.c \
 			  init_mlx.c \
-			  init_structs.c
+			  init_structs.c \
+			  draw.c \
+			  utils.c
 
 SRCS		= $(addprefix $(SRCSDIR)/, $(FILES))
 OBJS		= $(SRCS:$(SRCSDIR)/%.c=$(OBJSDIR)/%.o)

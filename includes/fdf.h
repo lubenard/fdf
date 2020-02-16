@@ -6,7 +6,7 @@
 /*   By: lubenard <lubenard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 23:57:40 by lubenard          #+#    #+#             */
-/*   Updated: 2020/02/13 17:35:42 by lubenard         ###   ########.fr       */
+/*   Updated: 2020/02/16 16:44:03 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,19 @@ t_map_lst				*create_new_elem(void);
 ** Get map
 */
 
-int						get_map(t_fdf *fdf, int nbr_files, char **files);
+int						get_map(t_fdf **fdf, int nbr_files, char **files);
 
 /*
-** MLX part
+** Graphical part
 */
 
 int						init_mlx(t_fdf *fdf);
+int						draw(t_fdf *fdf);
+
+/*
+** Utils
+*/
+int						error(char *error_message);
 void					free_structs(t_fdf *fdf);
 
 # endif

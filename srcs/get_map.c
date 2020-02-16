@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 11:03:08 by lubenard          #+#    #+#             */
-/*   Updated: 2020/02/13 19:38:45 by lubenard         ###   ########.fr       */
+/*   Updated: 2020/02/16 16:44:59 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ int		format_line(t_map *map, char *line, int y)
 {
 	char		**splitted_line;
 	int			j;
+	t_map_lst	*tmp;
 
 	j = 0;
 	splitted_line = ft_strsplit(line, ' ');
@@ -77,10 +78,11 @@ int		format_line(t_map *map, char *line, int y)
 		j++;
 	}
 	ft_printf("Premiere ligne --------------------------------\n");
-	while (map->lst)
+	tmp = map->lst;
+	while (tmp)
 	{
-		ft_printf("%d ", map->lst->alt);
-		map->lst = map->lst->next;
+		//ft_printf("{y:%d x:%d alt:%d}", tmp->y, tmp->x,tmp->alt);
+		tmp = tmp->next;
 	}
 	ft_printf("\n");
 	return (0);
@@ -90,7 +92,7 @@ int		format_line(t_map *map, char *line, int y)
 ** Will read the file passed in argument
 */
 
-int		get_map(t_fdf *fdf, int nbr_files, char **files)
+int		get_map(t_fdf **fdf, int nbr_files, char **files)
 {
 	int		fd;
 	char	*lines;
@@ -98,19 +100,18 @@ int		get_map(t_fdf *fdf, int nbr_files, char **files)
 
 	y = 0;
 	if (nbr_files > 2 || nbr_files == 1)
-	{
-		ft_dprintf(2, "Error: usage: ./fdf map\n");
-		return (1);
-	}
+		return (error("Error: usage: ./fdf map\n"));
 	else
 	{
-		fd = open(files[1], O_RDONLY);
-		fdf = init_fdf_structs();
+		if ((fd = open(files[1], O_RDONLY)) == -1)
+			return (error("Could not open the file\n"));
+		if (!(*fdf = init_fdf_structs()))
+			return (error("Malloc failed when initialising structs\n"));
 		//check_map();
 		while (get_next_line(fd, &lines) > 0)
 		{
-			format_line(fdf->map, lines, y++);
-			break ; //DEBUG
+			format_line((*fdf)->map, lines, y++);
+			//break ; //DEBUG
 		}
 		close(fd);
 		return (0);
