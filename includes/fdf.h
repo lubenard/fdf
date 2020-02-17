@@ -6,7 +6,7 @@
 /*   By: lubenard <lubenard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 23:57:40 by lubenard          #+#    #+#             */
-/*   Updated: 2020/02/16 16:44:03 by lubenard         ###   ########.fr       */
+/*   Updated: 2020/02/17 17:11:33 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ typedef struct			s_map_lst
 	int					x;
 	int					y;
 	int					alt;
+	int					color;
 	struct s_map_lst	*up;
 	struct s_map_lst	*down;
 	struct s_map_lst	*next;
@@ -37,10 +38,20 @@ typedef struct			s_map
 	struct s_map_lst	*last;
 }						t_map;
 
-typedef struct			s_fdf
+typedef struct			s_mlx
 {
 	void				*mlx_ptr;
 	void				*mlx_win;
+	void				*img_ptr;
+	unsigned int		*data;
+	int					bpp;
+	int					size_line;
+	int					endian;
+}						t_mlx;
+
+typedef struct			s_fdf
+{
+	struct s_mlx		*mlx;
 	struct s_map		*map;
 }						t_fdf;
 

@@ -9,3 +9,4 @@ vgcore.*
 *.gen
 *.dSYM
 *.swiftdoc
+*.gen

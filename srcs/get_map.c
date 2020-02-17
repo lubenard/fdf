@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 11:03:08 by lubenard          #+#    #+#             */
-/*   Updated: 2020/02/16 16:44:59 by lubenard         ###   ########.fr       */
+/*   Updated: 2020/02/17 17:38:48 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,11 @@ int		insert_char(t_map *map, char *lines, size_t x, size_t y)
 		return (1);
 	}*/
 	map_elem->alt = ft_atoi(lines);
+	if (map_elem->alt <= -10)
+		map_elem->color = 0x0000FF;
+	else if (map_elem->alt >= 10)
+		map_elem->color = 0x00FF0000;
+	//ft_printf("generated %#x\n", 0x00FFFFFF);
 	map_elem->x = x;
 	map_elem->y = y;
 	map->last = map_elem;
@@ -77,14 +82,14 @@ int		format_line(t_map *map, char *line, int y)
 		insert_char(map, splitted_line[j], j, y);
 		j++;
 	}
-	ft_printf("Premiere ligne --------------------------------\n");
+	//ft_printf("Premiere ligne --------------------------------\n");
 	tmp = map->lst;
 	while (tmp)
 	{
 		//ft_printf("{y:%d x:%d alt:%d}", tmp->y, tmp->x,tmp->alt);
 		tmp = tmp->next;
 	}
-	ft_printf("\n");
+	//ft_printf("\n");
 	return (0);
 }
 
