@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 17:38:54 by lubenard          #+#    #+#             */
-/*   Updated: 2020/02/18 13:45:58 by lubenard         ###   ########.fr       */
+/*   Updated: 2020/02/18 16:05:15 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,13 @@
 int		fill_pixel(t_mlx *mlx, int color, int y, int x, char *DEBUG)
 {
 	(void)DEBUG;
-	ft_printf("Je dessine un point pour %s a ((%d * %d * 1) + 20 + (%d * 100) = %d\n", DEBUG , mlx->size_line, y, x * 100, (mlx->size_line * y * 5) + 20 + (x * 100));
+	if (x < 0)
+		x *= -1;
+	if (y < 0)
+		y *= -1;
+	ft_printf("{y:%d x:%d}\n", y, x);
+
+	//ft_printf("Je dessine un point pour %s a ((%d * %d * 1) + 20 + (%d * 100) = %d\n", DEBUG , mlx->size_line, y, x * 100, (mlx->size_line * y * 5) + 20 + (x * 100));
 	mlx->data[mlx->size_line * y + x] = mlx_get_color_value(mlx->mlx_ptr, color);
 	return (0);
 }
@@ -36,13 +42,16 @@ int		set_image(t_fdf *fdf)
 	fdf->mlx->data = (unsigned int *)mlx_get_data_addr(fdf->mlx->img_ptr, &fdf->mlx->bpp, &fdf->mlx->size_line, &fdf->mlx->endian);
 	while (lst)
 	{
-		fill_pixel(fdf->mlx, lst->color, lst->y * 5 , lst->x * 100 + 20 + lst->alt * 3, "POINT");
-		if (lst->next && lst->y == lst->next->y)
+		pai(lst);
+		fill_pixel(fdf->mlx, lst->color, lst->y, lst->x , "POINT");
+		//fill_pixel(fdf->mlx, lst->color, lst->y * 5 - lst->alt * 2, lst->x * 100 + 20 + lst->alt, "POINT");
+		/*if (lst->next && lst->y == lst->next->y)
 		{
-			//ft_printf("Je trace une ligne entre %d et %d\n", (fdf->mlx->size_line * lst->y * 5) + 20 + (lst->x * 100) + k, (fdf->mlx->size_line * lst->next->y * 5) + 20 + (lst->next->x * 100) );
-				while (fdf->mlx->size_line * lst->y * 5 + lst->x * 100 + 20 + lst->alt * 3 + k <
-				fdf->mlx->size_line * lst->next->y * 5 + lst->next->x * 100 + 20 + lst->alt * 3)
-					fill_pixel(fdf->mlx, lst->color, lst->y * 5, lst->x * 100 + 20 + lst->alt * 3 + k++, "LIGNE VERTICALE");
+			ft_printf("Je trace une ligne entre %d {y:%d x:%d alt:%d} et %d {y:%d x:%d alt:%d}\n", (fdf->mlx->size_line * lst->y * 5) + 20 + (lst->x * 100) + k, lst->y, lst->x, lst->alt, (fdf->mlx->size_line * lst->next->y * 5) + 20 + (lst->next->x * 100), lst->next->y, lst->next->x, lst->next->alt);
+
+				while (fdf->mlx->size_line * lst->y * 5 - lst->alt * 2 + lst->x * 100 + 20 + lst->alt + k <
+				fdf->mlx->size_line * lst->next->y * 5 - lst->alt * 2 + lst->next->x * 100 + 20 + lst->alt)
+					fill_pixel(fdf->mlx, 0x00FFFFFF, lst->y * 5 - lst->alt * 2, lst->x * 100 + 20 + lst->alt + k++, "LIGNE VERTICALE");
 				k = 0;
 		}
 		k = 0;
@@ -52,11 +61,11 @@ int		set_image(t_fdf *fdf)
 			//ft_printf("%d - %d = %d\n", fdf->mlx->size_line * lst->y * 5 + lst->x * 100 + 20,fdf->mlx->size_line * lst->up->y * 5 + lst->up->x * 100 + 20 , (fdf->mlx->size_line * lst->up->y * 5 + lst->up->x * 100 + 20) - (fdf->mlx->size_line * lst->y * 5 + lst->x * 100 + 20));
 			while (k != 0)
 			{
-				fill_pixel(fdf->mlx, 0x00FFFFFF, lst->y * 5 + k, lst->x * 100 + 20 + lst->alt * 3, "LIGNE HORIZONTAL");
+				fill_pixel(fdf->mlx, 0x00FFFFFF, lst->y * 5 - lst->alt * 2 + k, lst->x * 100 + 20 + lst->alt, "LIGNE HORIZONTAL");
 				k++;
 			}
 			k = 0;
-		}
+		}*/
 		lst = lst->next;
 	}
 	mlx_put_image_to_window(fdf->mlx->mlx_ptr, fdf->mlx->mlx_win, fdf->mlx->img_ptr, 0, 50);

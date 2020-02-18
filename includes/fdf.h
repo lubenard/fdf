@@ -6,7 +6,7 @@
 /*   By: lubenard <lubenard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 23:57:40 by lubenard          #+#    #+#             */
-/*   Updated: 2020/02/18 12:09:06 by lubenard         ###   ########.fr       */
+/*   Updated: 2020/02/18 15:59:51 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ int						get_map(t_fdf **fdf, int nbr_files, char **files);
 
 int						init_mlx(t_fdf *fdf);
 int						draw(t_fdf *fdf);
+void					pai(t_map_lst *lst);
 
 /*
 ** Utils

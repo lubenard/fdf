@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 11:03:08 by lubenard          #+#    #+#             */
-/*   Updated: 2020/02/18 13:20:00 by lubenard         ###   ########.fr       */
+/*   Updated: 2020/02/18 16:42:20 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,39 @@
 /*
 ** Insert character into linked list at the right place
 */
+
+int			xi(t_map_lst *lst)
+{
+	int x;
+	int dx;
+
+	x = ((lst->x - lst->y) * 64) + 10; //v.bx
+	dx = x - 960;
+	x = 960 + (dx * 1); //v.z
+	ft_printf("Je return x = %d\n", x);
+	return (x);
+}
+
+int			yi(t_map_lst *lst)
+{
+	int y;
+	int dy;
+
+	y = ((lst->y + lst->x) * 32 + 10) - lst->alt * 5; //v.by v.h
+	dy = y - 540;
+	y = 540 + (dy * 1); //v.z
+	ft_printf("Je return y = %d\n", y);
+	return (y);
+}
+
+void	pai(t_map_lst *lst)
+{
+	ft_printf("Old coords are {y:%d x:%d alt:%d}\n", lst->y, lst->x, lst->alt);
+	lst->x = xi(lst);
+	lst->y = yi(lst);
+	ft_printf("new coords are {y:%d x:%d}\n", lst->y, lst->x);
+	return ;
+}
 
 int		insert_char(t_map *map, char *lines, size_t x, size_t y)
 {
@@ -58,24 +91,23 @@ int		insert_char(t_map *map, char *lines, size_t x, size_t y)
 	//ft_printf("generated %#x\n", 0x00FFFFFF);
 	map_elem->x = x;
 	map_elem->y = y;
+	//pai(map_elem);
 	curr = map_elem;
 	map->last = map_elem;
 	int		test = 0;
 	if (map_elem->y > 0)
 	{
-		ft_printf("Je suis sur le maillon {y:%d x:%d alt:%d}\n", curr->y, curr->x, curr->alt);
-		while (test != (int)map->line_size)
+		//ft_printf("Je suis sur le maillon {y:%d x:%d alt:%d}\n", curr->y, curr->x, curr->alt);
+		while (curr && test != (int)map->line_size)
 		{
-			ft_printf("Je remonte de %d maillons\n", test);
+			//ft_printf("Je remonte de %d maillons\n", test);
 			curr = curr->prev;
 			test++;
 		}
-		ft_printf("Je viens d'arriver sur le maillon {y:%d x:%d alt:%d}\n", curr->y, curr->x, curr->alt);
+		//ft_printf("Je viens d'arriver sur le maillon {y:%d x:%d alt:%d}\n", curr->y, curr->x, curr->alt);
 		map_elem->up = curr;
-		ft_printf("Je map->up pointe vers %p, soit {y:%d x:%d alt:%d}\n", map_elem->up , map_elem->up->y, map_elem->up->x, map_elem->up->alt);
+		//ft_printf("Je map->up pointe vers %p, soit {y:%d x:%d alt:%d}\n", map_elem->up , map_elem->up->y, map_elem->up->x, map_elem->up->alt);
 	}
-	//map->last = map_elem;
-	//ft_printf("x = %d et y = %d, alt = %d\n", map_elem->x, map_elem->y, map_elem->alt);
 	return (0);
 }
 
@@ -104,7 +136,7 @@ int		format_line(t_map *map, char *line, int y)
 	tmp = map->lst;
 	while (tmp)
 	{
-		//ft_printf("{y:%d x:%d alt:%d}", tmp->y, tmp->x,tmp->alt);
+		//ft_printf("{y:%d x:%d alt:%d}\n", tmp->y, tmp->x,tmp->alt);
 		tmp = tmp->next;
 	}
 	//ft_printf("\n");
@@ -129,7 +161,7 @@ int		get_map(t_fdf **fdf, int nbr_files, char **files)
 		if ((fd = open(files[1], O_RDONLY)) == -1)
 			return (error("Could not open the file\n"));
 		if (!(*fdf = init_fdf_structs()))
-			return (error("Malloc failed when initialising structs\n"));
+			return (error("Malloc failed when initialising lstcts\n"));
 		//check_map();
 		while (get_next_line(fd, &lines) > 0)
 		{
