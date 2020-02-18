@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 11:58:55 by lubenard          #+#    #+#             */
-/*   Updated: 2020/02/17 17:23:50 by lubenard         ###   ########.fr       */
+/*   Updated: 2020/02/18 13:17:15 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ int		escape_key(int keycode, void *param)
 
 int		init_mlx(t_fdf *fdf)
 {
-	ft_printf("fdf is %p and mlx_ptr %p\n", fdf, fdf->mlx->mlx_ptr);
 	if (!(fdf->mlx->mlx_ptr = mlx_init()))
 		return (1);
 	fdf->mlx->mlx_win = mlx_new_window(fdf->mlx->mlx_ptr, WIN_WIDTH, WIN_HEIGHT,

@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/15 19:05:44 by lubenard          #+#    #+#             */
-/*   Updated: 2020/02/17 17:12:17 by lubenard         ###   ########.fr       */
+/*   Updated: 2020/02/18 12:23:46 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ t_fdf		*init_fdf_structs(void)
 	fdf->map->last = NULL;
 	fdf->map->lst = NULL;
 	fdf->map->size = 0;
+	fdf->map->line_size = 0;
 	return (fdf);
 }
 
@@ -52,7 +53,6 @@ t_map_lst	*create_new_elem(void)
 	elem->alt = 0;
 	elem->color = 0x00FFFFFF;
 	elem->up = NULL;
-	elem->down = NULL;
 	elem->next = NULL;
 	elem->prev = NULL;
 	return (elem);

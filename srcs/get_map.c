@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 11:03:08 by lubenard          #+#    #+#             */
-/*   Updated: 2020/02/17 17:38:48 by lubenard         ###   ########.fr       */
+/*   Updated: 2020/02/18 13:20:00 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,22 @@ int		insert_char(t_map *map, char *lines, size_t x, size_t y)
 	//ft_printf("generated %#x\n", 0x00FFFFFF);
 	map_elem->x = x;
 	map_elem->y = y;
+	curr = map_elem;
 	map->last = map_elem;
+	int		test = 0;
+	if (map_elem->y > 0)
+	{
+		ft_printf("Je suis sur le maillon {y:%d x:%d alt:%d}\n", curr->y, curr->x, curr->alt);
+		while (test != (int)map->line_size)
+		{
+			ft_printf("Je remonte de %d maillons\n", test);
+			curr = curr->prev;
+			test++;
+		}
+		ft_printf("Je viens d'arriver sur le maillon {y:%d x:%d alt:%d}\n", curr->y, curr->x, curr->alt);
+		map_elem->up = curr;
+		ft_printf("Je map->up pointe vers %p, soit {y:%d x:%d alt:%d}\n", map_elem->up , map_elem->up->y, map_elem->up->x, map_elem->up->alt);
+	}
 	//map->last = map_elem;
 	//ft_printf("x = %d et y = %d, alt = %d\n", map_elem->x, map_elem->y, map_elem->alt);
 	return (0);
@@ -76,12 +91,15 @@ int		format_line(t_map *map, char *line, int y)
 
 	j = 0;
 	splitted_line = ft_strsplit(line, ' ');
+	map->line_size = ft_2dstrlen(splitted_line);
+	ft_printf("length of my line is %d\n", map->line_size);
 	while (splitted_line[j])
 	{
 		//ft_printf("J'envoie %s a insert_char\n", splitted_line[j]);
 		insert_char(map, splitted_line[j], j, y);
 		j++;
 	}
+	ft_2dstrdel(&splitted_line);
 	//ft_printf("Premiere ligne --------------------------------\n");
 	tmp = map->lst;
 	while (tmp)
