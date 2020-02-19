@@ -6,16 +6,12 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 11:03:08 by lubenard          #+#    #+#             */
-/*   Updated: 2020/02/18 16:42:20 by lubenard         ###   ########.fr       */
+/*   Updated: 2020/02/19 17:04:43 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include <fcntl.h>
-
-/*
-** Insert character into linked list at the right place
-*/
 
 int			xi(t_map_lst *lst)
 {
@@ -25,7 +21,7 @@ int			xi(t_map_lst *lst)
 	x = ((lst->x - lst->y) * 64) + 10; //v.bx
 	dx = x - 960;
 	x = 960 + (dx * 1); //v.z
-	ft_printf("Je return x = %d\n", x);
+	//ft_printf("Je return x = %d\n", x);
 	return (x);
 }
 
@@ -34,21 +30,33 @@ int			yi(t_map_lst *lst)
 	int y;
 	int dy;
 
+	(void)lst;
 	y = ((lst->y + lst->x) * 32 + 10) - lst->alt * 5; //v.by v.h
+	//ft_printf("y = %d\n", y);
 	dy = y - 540;
+	//ft_printf("dy = %d\n", dy);
 	y = 540 + (dy * 1); //v.z
-	ft_printf("Je return y = %d\n", y);
+	//ft_printf("Je return y = %d\n", y);
 	return (y);
 }
 
 void	pai(t_map_lst *lst)
 {
+	int x;
+	int y;
+
+	x = xi(lst);
+	y = yi(lst);
 	ft_printf("Old coords are {y:%d x:%d alt:%d}\n", lst->y, lst->x, lst->alt);
-	lst->x = xi(lst);
-	lst->y = yi(lst);
+	lst->x = x;
+	lst->y = y;
 	ft_printf("new coords are {y:%d x:%d}\n", lst->y, lst->x);
 	return ;
 }
+
+/*
+** Insert character into linked list at the right place
+*/
 
 int		insert_char(t_map *map, char *lines, size_t x, size_t y)
 {
