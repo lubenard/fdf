@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 11:03:08 by lubenard          #+#    #+#             */
-/*   Updated: 2020/02/19 17:04:43 by lubenard         ###   ########.fr       */
+/*   Updated: 2020/02/20 20:02:57 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int			yi(t_map_lst *lst)
 	return (y);
 }
 
-void	pai(t_map_lst *lst)
+t_map_lst	*pai(t_map_lst *lst)
 {
 	int x;
 	int y;
@@ -51,7 +51,7 @@ void	pai(t_map_lst *lst)
 	lst->x = x;
 	lst->y = y;
 	ft_printf("new coords are {y:%d x:%d}\n", lst->y, lst->x);
-	return ;
+	return (lst);
 }
 
 /*

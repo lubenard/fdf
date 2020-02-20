@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 17:38:54 by lubenard          #+#    #+#             */
-/*   Updated: 2020/02/19 18:08:40 by lubenard         ###   ########.fr       */
+/*   Updated: 2020/02/20 20:06:59 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,29 +144,29 @@ void	linehhi(t_map_lst *p1, t_map_lst *p2, t_fdf *fdf)
 
 void	linei(t_map_lst *p1, t_map_lst *p2, t_fdf *fdf)
 {
-	t_coord	pt;
-	int		dx;
-	int		dy;
+	t_map_lst	*elem;
+	int			dx;
+	int			dy;
 
 	if (p1->x > p2->x)
 	{
-		pt = p1;
+		elem = p1;
 		p1 = p2;
-		p2 = pt;
+		p2 = elem;
 	}
 	dx = ABS(p2->x - p1->x);
 	dy = ABS(p2->y - p1->y);
 	if (p1->y > p2->y)
 	{
 		if (dx > dy)
-			linehli(p1, p2, v);
+			linehli(fdf, p1, p2);
 		else
-			linehhi(p1, p2, v);
+			linehhi(p1, p2, fdf);
 	}
 	else if (dx > dy)
-		linebli(p1, p2, v);
+		linebli(fdf, p1, p2);
 	else
-		linebhi(p1, p2, v);
+		linebhi(fdf, p1, p2);
 }
 
 int			x(t_map_lst *lst)
@@ -180,53 +180,57 @@ int			x(t_map_lst *lst)
 	return (x);
 }
 
-int			y(t_p *stru, t_mv m)
+int			y(t_map_lst *stru)
 {
 	int y;
 	int dy;
 
-	y = (stru->y * 64 + m.by) - stru->z * m.h;
+	y = (stru->y * 64 + 10) - stru->alt * 5;
 	dy = y - 540;
-	y = 540 + (dy * m.z);
+	y = 540 + (dy * 1);
 	return (y);
 }
 
-t_coord		pa(t_map_lst *lst, t_mv m)
+void		pa(t_map_lst *lst)
 {
-	t_coord p;
+	int x_var;
+	int y_var;
 
-	p.x = x(lst, m);
-	p.y = y(lst, m);
-	return (p);
+	x_var = x(lst);
+	y_var = y(lst);
+	lst->y = y_var;
+	lst->x = x_var;
+	return ;
 }
 
-void	map(t_p *p, t_mv m)
+void	map(t_map_lst *p, t_fdf *fdf)
 {
-	mlx_clear_window(m.mlx_ptr, m.win_ptr);
-	if (m.i == 0)
+	mlx_clear_window(fdf->mlx->mlx_ptr, fdf->mlx->mlx_win);
+	if (1 == 0)
 	{
-		while (p != NULL)
+		/*while (p != NULL)
 		{
 			if (p->link_h != NULL)
-				linei(pa(p, m), pa(p->link_h, m), m);
+				linei(pa(p), pa(p->link_h), m);
 			if (p->link_v != NULL)
-				linei(pa(p, m), pa(p->link_v, m), m);
+				linei(pa(p), pa(p->link_v), m);
 			p = p->next;
-		}
+				
+		}*/
 	}
 	else
 	{
-		while (p != NULL)
+		while (p)
 		{
-			if (p->link_h != NULL)
-				linei(pai(p, m), pai(p->link_h, m), m);
-			if (p->link_v != NULL)
-				linei(pai(p, m), pai(p->link_v, m), m);
+			//if (p->link_h != NULL)
+			//	linei(pai(p), pai(p->link_h), m);
+			if (p->up != NULL)
+				linei(pai(p), pai(p->up), fdf);
 			p = p->next;
 		}
 	}
-	mlx_put_image_to_window((void *)&m, m.win_ptr, m.img_ptr, 0, 0);
-	ft_bzero(m.img, 8294400);
+	mlx_put_image_to_window(fdf->mlx->mlx_ptr, fdf->mlx->mlx_win, fdf->mlx->img_ptr, 0, 0);
+	ft_bzero(fdf->mlx->data, 8294400);
 }
 
 /*
@@ -243,13 +247,13 @@ int		set_image(t_fdf *fdf)
 	fdf->mlx->img_ptr = mlx_new_image(fdf->mlx->mlx_ptr, WIN_WIDTH, WIN_HEIGHT);
 	fdf->mlx->data = malloc(sizeof(unsigned char) * 8294400);
 	fdf->mlx->data = (unsigned int *)mlx_get_data_addr(fdf->mlx->img_ptr, &fdf->mlx->bpp, &fdf->mlx->size_line, &fdf->mlx->endian);
-
-	while (lst)
+	map(lst, fdf);
+	/*while (lst)
 	{
 		pai(lst);
 		//fill_pixel(fdf->mlx, lst->color, lst->y, lst->x , "POINT");
 		//fill_pixel(fdf->mlx, lst->color, lst->y * 5 - lst->alt * 2, lst->x * 100 + 20 + lst->alt, "POINT");
-		/*if (lst->next && lst->y == lst->next->y)
+		if (lst->next && lst->y == lst->next->y)
 		{
 			ft_printf("Je trace une ligne entre %d {y:%d x:%d alt:%d} et %d {y:%d x:%d alt:%d}\n", (fdf->mlx->size_line * lst->y * 5) + 20 + (lst->x * 100) + k, lst->y, lst->x, lst->alt, (fdf->mlx->size_line * lst->next->y * 5) + 20 + (lst->next->x * 100), lst->next->y, lst->next->x, lst->next->alt);
 
@@ -269,10 +273,10 @@ int		set_image(t_fdf *fdf)
 				k++;
 			}
 			k = 0;
-		}*/
+		}
 		lst = lst->next;
-	}
-	mlx_put_image_to_window(fdf->mlx->mlx_ptr, fdf->mlx->mlx_win, fdf->mlx->img_ptr, 0, 50);
+	}*/
+	///mlx_put_image_to_window(fdf->mlx->mlx_ptr, fdf->mlx->mlx_win, fdf->mlx->img_ptr, 0, 50);
 	mlx_loop(fdf->mlx->mlx_ptr);
 	return (0);
 }
