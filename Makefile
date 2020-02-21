@@ -6,7 +6,7 @@
 #    By: lubenard <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/12 18:13:02 by lubenard          #+#    #+#              #
-#    Updated: 2020/02/16 16:47:35 by lubenard         ###   ########.fr        #
+#    Updated: 2020/02/21 16:34:09 by lubenard         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -78,7 +78,7 @@ endif
 $(NAME): $(OBJS)
 	@$(MAKE) -q -C $(LIBFT) || $(MAKE) -j4 -C $(LIBFT)
 	@echo -e -n "\n${_BLUE}${_BOLD}[Create Executable] $(NAME)${_END}"
-	@make -j4 -C $(LIBX_SIERRA)
+	@make -j4 -C $(LIBX_SIERRA) &> /dev/null
 	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L./$(LIBFT) -lft -L ./$(LIBX_SIERRA) -lmlx -framework OpenGL -framework AppKit
 	@echo -e "\n${_GREEN}${_BOLD}$(NAME) done.${_END}"
 

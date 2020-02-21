@@ -6,7 +6,7 @@
 /*   By: lubenard <lubenard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 23:57:40 by lubenard          #+#    #+#             */
-/*   Updated: 2020/02/20 20:03:14 by lubenard         ###   ########.fr       */
+/*   Updated: 2020/02/21 16:28:06 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,14 @@
 
 # define WIN_WIDTH 1080
 # define WIN_HEIGHT 720
+
+typedef struct			s_coord
+{
+	double				x;
+	double				y;
+	double				alt;
+}						t_coord;
+
 
 typedef struct			s_map_lst
 {
@@ -74,7 +82,6 @@ int						get_map(t_fdf **fdf, int nbr_files, char **files);
 
 int						init_mlx(t_fdf *fdf);
 int						draw(t_fdf *fdf);
-t_map_lst				*pai(t_map_lst *lst);
 
 /*
 ** Utils
