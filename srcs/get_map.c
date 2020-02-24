@@ -6,12 +6,35 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 11:03:08 by lubenard          #+#    #+#             */
-/*   Updated: 2020/02/21 11:32:14 by lubenard         ###   ########.fr       */
+/*   Updated: 2020/02/24 18:42:27 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include <fcntl.h>
+
+/*
+** Make connections between points, if needed
+*/
+
+void	make_connections(t_map *map, t_map_lst *map_elem)
+{
+	int			i;
+	t_map_lst	*curr;
+
+	curr = map_elem;
+	i = 0;
+	if (map_elem->y > 0)
+	{
+		while (curr && i != (int)map->line_size)
+		{
+			curr = curr->prev;
+			i++;
+		}
+		map_elem->up = curr;
+		curr->down = map_elem;
+	}
+}
 
 /*
 ** Insert character into linked list at the right place
@@ -21,60 +44,25 @@ int		insert_char(t_map *map, char *lines, size_t x, size_t y)
 {
 	t_map_lst	*map_elem;
 	size_t		i;
-	t_map_lst	*curr;
 
-	(void)lines;
-	map_elem = create_new_elem();
 	i = 0;
-	curr = map->lst;
+	map_elem = create_new_elem();
 	if (x == 0 && y == 0)
-	{
-		ft_printf("First elem, is entrypoint\n");
 		map->lst = map_elem;
-	}
-	/*while (i != y && curr->down)
-	{
-		ft_printf("Je descend de %d dans la liste\n", i);
-		curr = curr->down;
-		i++;
-	}*/
-	//while ()
-	//ft_printf("map->last = %p\n", map->last);
 	if (map->last)
 	{
 		map->last->next = map_elem;
 		map_elem->prev = map->last;
 	}
-	/*if ((map_elem->alt = ft_atoi(lines)))
-	{
-		ft_dprintf(2, "Apparently, %s is not a valid integer\n", lines);
-		return (1);
-	}*/
 	map_elem->alt = ft_atoi(lines);
 	if (map_elem->alt <= -10)
 		map_elem->color = 0x0000FF;
 	else if (map_elem->alt >= 10)
 		map_elem->color = 0x00FF0000;
-	//ft_printf("generated %#x\n", 0x00FFFFFF);
 	map_elem->x = x;
 	map_elem->y = y;
-	//pai(map_elem);
-	curr = map_elem;
 	map->last = map_elem;
-	int		test = 0;
-	if (map_elem->y > 0)
-	{
-		//ft_printf("Je suis sur le maillon {y:%d x:%d alt:%d}\n", curr->y, curr->x, curr->alt);
-		while (curr && test != (int)map->line_size)
-		{
-			//ft_printf("Je remonte de %d maillons\n", test);
-			curr = curr->prev;
-			test++;
-		}
-		//ft_printf("Je viens d'arriver sur le maillon {y:%d x:%d alt:%d}\n", curr->y, curr->x, curr->alt);
-		map_elem->up = curr;
-		//ft_printf("Je map->up pointe vers %p, soit {y:%d x:%d alt:%d}\n", map_elem->up , map_elem->up->y, map_elem->up->x, map_elem->up->alt);
-	}
+	make_connections(map, map_elem);
 	return (0);
 }
 
@@ -86,27 +74,26 @@ int		format_line(t_map *map, char *line, int y)
 {
 	char		**splitted_line;
 	int			j;
-	t_map_lst	*tmp;
+	int			map_size_x;
 
 	j = 0;
 	splitted_line = ft_strsplit(line, ' ');
-	map->line_size = ft_2dstrlen(splitted_line);
-	ft_printf("length of my line is %d\n", map->line_size);
+	map_size_x = ft_2dstrlen(splitted_line);
+	if (y > 0 && map_size_x != (int)map->line_size)
+	{
+		write(2, "Hum, the map seems incorrect...\n", 32);
+		ft_2dstrdel(&splitted_line);
+		ft_strdel(&line);
+		return (1);
+	}
+	map->line_size = map_size_x;
 	while (splitted_line[j])
 	{
-		//ft_printf("J'envoie %s a insert_char\n", splitted_line[j]);
 		insert_char(map, splitted_line[j], j, y);
 		j++;
 	}
 	ft_2dstrdel(&splitted_line);
-	//ft_printf("Premiere ligne --------------------------------\n");
-	tmp = map->lst;
-	while (tmp)
-	{
-		//ft_printf("{y:%d x:%d alt:%d}\n", tmp->y, tmp->x,tmp->alt);
-		tmp = tmp->next;
-	}
-	//ft_printf("\n");
+	ft_strdel(&line);
 	return (0);
 }
 
@@ -128,13 +115,11 @@ int		get_map(t_fdf **fdf, int nbr_files, char **files)
 		if ((fd = open(files[1], O_RDONLY)) == -1)
 			return (error("Could not open the file\n"));
 		if (!(*fdf = init_fdf_structs()))
-			return (error("Malloc failed when initialising lstcts\n"));
-		//check_map();
+			return (error("Malloc failed when initialising structs\n"));
 		while (get_next_line(fd, &lines) > 0)
-		{
-			format_line((*fdf)->map, lines, y++);
-			//break ; //DEBUG
-		}
+			if (format_line((*fdf)->map, lines, y++) == 1)
+				return (2);
+		(*fdf)->map->height_size = y - 1;
 		close(fd);
 		return (0);
 	}

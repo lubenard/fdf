@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 19:05:44 by lubenard          #+#    #+#             */
-/*   Updated: 2020/02/21 14:28:44 by lubenard         ###   ########.fr       */
+/*   Updated: 2020/02/24 19:13:12 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,16 @@
 int		main(int argc, char **argv)
 {
 	t_fdf	*fdf;
+	int		return_parsing;
 
 	fdf = NULL;
-	if (get_map(&fdf, argc, argv) == 1 || init_mlx(fdf) == 1)
+	return_parsing = get_map(&fdf, argc, argv);
+	if (return_parsing == 1)
 		return (1);
-	/*while (fdf->map->lst)
-	{
-		pai(fdf->map->lst);
-		fdf->map->lst = fdf->map->lst->next;
-	}*/
+	else if (return_parsing == 2)
+		return (free_structs(fdf, 1));
+	if (init_mlx(fdf) == 1)
+		return (1);
 	draw(fdf);
-	//free_structs(fdf);
-	return (0);
+	return(free_structs(fdf, 0));
 }

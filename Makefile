@@ -6,7 +6,7 @@
 #    By: lubenard <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/12 18:13:02 by lubenard          #+#    #+#              #
-#    Updated: 2020/02/21 16:34:09 by lubenard         ###   ########.fr        #
+#    Updated: 2020/02/24 19:13:57 by lubenard         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,8 +24,8 @@ OBJSDIR		= objs
 
 FILES		= main.c \
 			  get_map.c \
-			  init_mlx.c \
 			  init_structs.c \
+			  init_mlx.c \
 			  draw.c \
 			  utils.c
 
@@ -74,25 +74,28 @@ ifeq ($(MOJAVE), true)
 all: $(OBJS) mojave_compil
 endif
 
-
 $(NAME): $(OBJS)
 	@$(MAKE) -q -C $(LIBFT) || $(MAKE) -j4 -C $(LIBFT)
 	@echo -e -n "\n${_BLUE}${_BOLD}[Create Executable] $(NAME)${_END}"
 	@make -j4 -C $(LIBX_SIERRA) &> /dev/null
+	#@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L./$(LIBFT) -lft 
 	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L./$(LIBFT) -lft -L ./$(LIBX_SIERRA) -lmlx -framework OpenGL -framework AppKit
 	@echo -e "\n${_GREEN}${_BOLD}$(NAME) done.${_END}"
 
 unix_compil:
+	@echo "${_RED}Compiling UNIX minilibx${_END}"
 	@make -j4 -C $(LIBX_UNIX)
 	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L $(LIBFT) -lft -L ./$(LIBX_UNIX) -lmlx -lXext -lX11
 
 mojave_compil:
+	@echo "${_RED}Compiling MOJAVE minilibx${_END}"
 	@make -j4 -C $(LIBX_MOJAVE)
 	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L $(LIBFT) -lft -L ./$(LIBX_MOJAVE) -lmlx -framework OpenGL -framework AppKit
 
 sierra_compil:
-	@make -j4 -C $(LIBX_SIERRA)
-	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L $(LIBFT) -lft -L ./$(LIBX_SIERRA) -lmlx -framework OpenGL -framework AppKit
+	@echo "${_RED}Compiling SIERRA minilibx${_END}"
+	@make -j4 -C $(LIBX_SIERRA) &> /dev/null
+	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L./$(LIBFT) -lft -L ./$(LIBX_SIERRA) -lmlx -framework OpenGL -framework AppKit
 
 $(OBJSDIR)/%.o: $(SRCSDIR)/%.c Makefile
 	@mkdir -p $(@D)

@@ -6,7 +6,7 @@
 /*   By: lubenard <lubenard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 23:57:40 by lubenard          #+#    #+#             */
-/*   Updated: 2020/02/21 16:28:06 by lubenard         ###   ########.fr       */
+/*   Updated: 2020/02/24 18:39:49 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,6 @@
 # define WIN_WIDTH 1080
 # define WIN_HEIGHT 720
 
-typedef struct			s_coord
-{
-	double				x;
-	double				y;
-	double				alt;
-}						t_coord;
-
-
 typedef struct			s_map_lst
 {
 	int					x;
@@ -34,6 +26,7 @@ typedef struct			s_map_lst
 	int					alt;
 	int					color;
 	struct s_map_lst	*up;
+	struct s_map_lst	*down;
 	struct s_map_lst	*next;
 	struct s_map_lst	*prev;
 }						t_map_lst;
@@ -41,8 +34,9 @@ typedef struct			s_map_lst
 typedef struct			s_map
 {
 	size_t				size;
-	struct s_map_lst	*lst;
 	size_t				line_size;
+	size_t				height_size;
+	struct s_map_lst	*lst;
 	struct s_map_lst	*last;
 }						t_map;
 
@@ -87,6 +81,6 @@ int						draw(t_fdf *fdf);
 ** Utils
 */
 int						error(char *error_message);
-void					free_structs(t_fdf *fdf);
+int						free_structs(t_fdf *fdf, int return_code);
 
 # endif
