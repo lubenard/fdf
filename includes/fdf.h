@@ -6,15 +6,15 @@
 /*   By: lubenard <lubenard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 23:57:40 by lubenard          #+#    #+#             */
-/*   Updated: 2020/02/25 14:31:49 by lubenard         ###   ########.fr       */
+/*   Updated: 2020/02/25 17:45:19 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# ifndef FDF_H
+#ifndef FDF_H
 # define FDF_H
 
-#include "../libft/includes/ft_printf.h"
-#include "../libft/includes/get_next_line.h"
+# include "../libft/includes/ft_printf.h"
+# include "../libft/includes/get_next_line.h"
 
 # define WIN_WIDTH 1080
 # define WIN_HEIGHT 720
@@ -39,6 +39,7 @@ typedef struct			s_map
 	struct s_map_lst	*lst;
 	struct s_map_lst	*last;
 	int					zoom_level;
+	int					vue;
 }						t_map;
 
 typedef struct			s_mlx
@@ -87,11 +88,13 @@ int						free_structs(t_fdf *fdf, int return_code);
 void					quit_fdf(t_fdf *fdf);
 
 /*
-** Moving with keys
+** Dealing with keys
 */
 
-int		move_x(t_fdf *map, int index);
-int		move_y(t_fdf *map, int index);
-int		zoom(t_fdf *map, int index);
+int						move_x(t_fdf *map, int index);
+int						move_y(t_fdf *map, int index);
+int						zoom(t_fdf *map, int index);
+int						change_vue(t_fdf *fdf);
+int						change_alt(t_fdf *map, int index);
 
-# endif
+#endif

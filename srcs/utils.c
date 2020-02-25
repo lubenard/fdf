@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 16:40:47 by lubenard          #+#    #+#             */
-/*   Updated: 2020/02/25 14:31:26 by lubenard         ###   ########.fr       */
+/*   Updated: 2020/02/25 14:34:29 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,9 @@ int		free_structs(t_fdf *fdf, int return_code)
 		ft_memdel((void **)&tmp_lst);
 	}
 	ft_memdel((void**)&fdf->map);
-	//ft_memdel(&fdf->mlx->mlx_ptr);
-	//ft_memdel(&fdf->mlx->mlx_win);
-	//ft_memdel(&fdf->mlx->img_ptr);
+	ft_memdel(&fdf->mlx->mlx_ptr);
+	ft_memdel(&fdf->mlx->mlx_win);
+	ft_memdel(&fdf->mlx->img_ptr);
 	ft_memdel((void**)&fdf->mlx);
 	ft_memdel((void**)&fdf);
 	return (return_code);

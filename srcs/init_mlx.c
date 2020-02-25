@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 11:58:55 by lubenard          #+#    #+#             */
-/*   Updated: 2020/02/25 14:32:16 by lubenard         ###   ########.fr       */
+/*   Updated: 2020/02/25 17:47:35 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,14 @@
 ** 69:  key + (zoom in)
 ** 78:  key - (zoom out)
 ** 53:  key escape (quit)
+** 9:   key v (change vue)
+** 27:  key shift + '-'
+** 24:  key shift + '='
 */
 
 int		keys(int keycode, void *param)
 {
+	ft_printf("Key code %d\n", keycode);
 	if (keycode == 53)
 		quit_fdf((t_fdf *)param);
 	else if (keycode == 126)
@@ -41,6 +45,12 @@ int		keys(int keycode, void *param)
 		zoom((t_fdf *)param, 1);
 	else if (keycode == 78)
 		zoom((t_fdf *)param, -1);
+	else if (keycode == 24)
+		change_alt((t_fdf *)param, 1);
+	else if (keycode == 27)
+		change_alt((t_fdf *)param, -1);
+	else if (keycode == 9)
+		change_vue((t_fdf *)param);
 	return (0);
 }
 

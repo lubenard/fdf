@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 19:05:44 by lubenard          #+#    #+#             */
-/*   Updated: 2020/02/24 19:13:12 by lubenard         ###   ########.fr       */
+/*   Updated: 2020/02/25 15:15:05 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,5 +26,5 @@ int		main(int argc, char **argv)
 	if (init_mlx(fdf) == 1)
 		return (1);
 	draw(fdf);
-	return(free_structs(fdf, 0));
+	return (free_structs(fdf, 0));
 }
