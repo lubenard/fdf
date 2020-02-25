@@ -6,11 +6,18 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 16:40:47 by lubenard          #+#    #+#             */
-/*   Updated: 2020/02/24 18:39:27 by lubenard         ###   ########.fr       */
+/*   Updated: 2020/02/25 14:31:26 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
+void	quit_fdf(t_fdf *fdf)
+{
+	write(1, "Exiting Fdf...\n", 16);
+	free_structs(fdf, 0);
+	exit(0);
+}
 
 int		error(char *error_message)
 {

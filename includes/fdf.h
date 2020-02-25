@@ -6,7 +6,7 @@
 /*   By: lubenard <lubenard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 23:57:40 by lubenard          #+#    #+#             */
-/*   Updated: 2020/02/24 18:39:49 by lubenard         ###   ########.fr       */
+/*   Updated: 2020/02/25 14:31:49 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ typedef struct			s_map
 	size_t				height_size;
 	struct s_map_lst	*lst;
 	struct s_map_lst	*last;
+	int					zoom_level;
 }						t_map;
 
 typedef struct			s_mlx
@@ -80,7 +81,17 @@ int						draw(t_fdf *fdf);
 /*
 ** Utils
 */
+
 int						error(char *error_message);
 int						free_structs(t_fdf *fdf, int return_code);
+void					quit_fdf(t_fdf *fdf);
+
+/*
+** Moving with keys
+*/
+
+int		move_x(t_fdf *map, int index);
+int		move_y(t_fdf *map, int index);
+int		zoom(t_fdf *map, int index);
 
 # endif
