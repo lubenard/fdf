@@ -6,7 +6,7 @@
 /*   By: lubenard <lubenard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 23:57:40 by lubenard          #+#    #+#             */
-/*   Updated: 2020/02/25 17:45:19 by lubenard         ###   ########.fr       */
+/*   Updated: 2020/02/26 14:22:07 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ typedef struct			s_map_lst
 	int					y;
 	int					alt;
 	int					color;
+	int					manual_alt;
 	struct s_map_lst	*up;
 	struct s_map_lst	*down;
 	struct s_map_lst	*next;

@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/25 12:56:51 by lubenard          #+#    #+#             */
-/*   Updated: 2020/02/25 17:43:38 by lubenard         ###   ########.fr       */
+/*   Updated: 2020/02/26 14:24:08 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ int		change_alt(t_fdf *fdf, int index)
 	map_tmp = fdf->map->lst;
 	while (map_tmp)
 	{
-		map_tmp->alt += index;
+		if (map_tmp->alt != 0)
+			map_tmp->manual_alt += index;
 		map_tmp = map_tmp->next;
 	}
 	draw(fdf);
