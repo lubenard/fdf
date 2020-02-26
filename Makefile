@@ -18,6 +18,7 @@ LIBFT		= libft
 LIBX_UNIX	= minilibx/unix
 LIBX_SIERRA	= minilibx/sierra
 LIBX_MOJAVE	= minilibx/mojave
+LIBX		= $(LIBX_SIERRA)
 SRCSDIR		= srcs
 INCDIR		= includes
 OBJSDIR		= objs
@@ -34,10 +35,13 @@ SRCS		= $(addprefix $(SRCSDIR)/, $(FILES))
 OBJS		= $(SRCS:$(SRCSDIR)/%.c=$(OBJSDIR)/%.o)
 OBJSD		= $(SRCS:$(SRCSDIR)/%.c=$(OBJSDIR)/%.d)
 
+MAKEFLAGS += --silent
+
 ##### Cross compil #####
 
 UNIX 		= false
-MAC			= false
+MOJAVE		= false
+SIERRA		= false
 
 ##### Colors #####
 _END		= \x1b[0m
@@ -64,6 +68,7 @@ CFLAGS += -fsanitize=address
 endif
 
 ifeq ($(UNIX), true)
+LIBX = $(LIBX_UNIX)
 all: $(OBJS) unix_compil
 endif
 
@@ -72,15 +77,16 @@ all: $(OBJS) sierra_compil
 endif
 
 ifeq ($(MOJAVE), true)
+LIBX = $(LIBX_MOJAVE)
 all: $(OBJS) mojave_compil
 endif
 
 $(NAME): $(OBJS)
 	@$(MAKE) -q -C $(LIBFT) || $(MAKE) -j4 -C $(LIBFT)
 	@echo -e -n "\n${_BLUE}${_BOLD}[Create Executable] $(NAME)${_END}"
-	@make -j4 -C $(LIBX_SIERRA) &> /dev/null
+	#@make -j4 -C $(LIBX_SIERRA) &> /dev/null
 	#@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L./$(LIBFT) -lft 
-	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L./$(LIBFT) -lft -L ./$(LIBX_SIERRA) -lmlx -framework OpenGL -framework AppKit
+	#@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L./$(LIBFT) -lft -L ./$(LIBX_SIERRA) -lmlx -framework OpenGL -framework AppKit
 	@echo -e "\n${_GREEN}${_BOLD}$(NAME) done.${_END}"
 
 unix_compil:
@@ -101,7 +107,7 @@ sierra_compil:
 $(OBJSDIR)/%.o: $(SRCSDIR)/%.c Makefile
 	@mkdir -p $(@D)
 	@echo -n -e "\r\033[K${_PURPLE}${BOLD}[${NAME}] Compiling $<${_END}"
-	@$(CC) $(CFLAGS) -I $(INCDIR) -I $(LIBFT)/$(INCDIR) -MMD -o $@ -c $<
+	@$(CC) $(CFLAGS) -I $(INCDIR) -I $(LIBFT)/$(INCDIR) -I $(LIBX) -MMD -o $@ -c $<
 
 libft:
 	@$(MAKE) -q -C $(LIBFT) || $(MAKE) -j4 -C $(LIBFT)
@@ -109,7 +115,7 @@ libft:
 
 clean:
 	@$(MAKE) -C $(LIBFT) clean
-	@echo "${_RED}${_BOLD}Cleaning obj files...${_END}"
+	@echo -e "${_RED}${_BOLD}Cleaning obj files from FDF...${_END}"
 	@rm -f $(OBJS)
 	@rm -f $(OBJSD)
 	@rm -Rf $(OBJDIR)
@@ -119,7 +125,7 @@ fclean: clean
 	@$(MAKE) -C $(LIBX_UNIX) clean
 	@$(MAKE) -C $(LIBX_SIERRA) clean
 	@$(MAKE) -C $(LIBX_MOJAVE) clean
-	@echo "${_RED}${_BOLD}Cleaning project...${_END}"
+	@echo -e "${_RED}${_BOLD}Cleaning project...${_END}"
 	@rm -f $(NAME)
 	@rm -rf $(OBJDIR)
 	@rm -rf $(NAME).dSYM

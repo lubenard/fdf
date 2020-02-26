@@ -13,8 +13,6 @@
 CC		=	clang
 CFLAGS	+=	-Wall -Werror -Wextra
 
-SHELL	=	bash
-
 NAME 	=	libft.a
 SRCDIR	=	srcs
 INCDIR	=	includes
@@ -173,7 +171,7 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c
 all: $(NAME)
 
 clean:
-	@echo -e "${_RED}${_BOLD}Removing obj files...${_END}"
+	@echo -e "${_RED}${_BOLD}Removing obj files from Libft...${_END}"
 	@rm -f $(OBJS)
 	@rm -f $(OBJSD)
 
