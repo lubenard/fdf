@@ -6,13 +6,19 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 17:38:54 by lubenard          #+#    #+#             */
-/*   Updated: 2020/02/26 16:34:52 by lubenard         ###   ########.fr       */
+/*   Updated: 2020/02/27 18:40:52 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include <mlx.h>
 #include <math.h>
+
+/*
+** Vue:
+** 0: iso
+** 1: flat
+*/
 
 int		change_vue(t_fdf *fdf)
 {
@@ -25,19 +31,16 @@ int		change_vue(t_fdf *fdf)
 }
 
 /*
-** Fill pixel at the right position
+** Fill pixel at the right position, gave by x and y
 */
 
 int		fill_pixel(t_fdf *fdf, int color, int y, int x)
 {
-	(void)color;
-	ft_printf("{y:%d x:%d},\n", y, x);
+	//ft_printf("{y:%d x:%d},\n", y, x);
 	//int form = ((WIN_WIDTH * y) + x) * fdf->map->zoom_level + (WIN_WIDTH / 2);
-	int form = (((WIN_WIDTH * y) + x) * fdf->map->zoom_level);
+	int form = (((WIN_WIDTH * y) + x));// * fdf->map->zoom_level);
 	if (x > 0 && y > 0 && x < WIN_WIDTH && y < WIN_HEIGHT)
-	{
 		fdf->mlx->data[form] = mlx_get_color_value(fdf->mlx->mlx_ptr, color);
-	}
 	return (0);
 }
 
@@ -45,159 +48,87 @@ int		fill_pixel(t_fdf *fdf, int color, int y, int x)
 ** Make segment using Bresenham algorythm
 */
 
-void	draw_line3(t_fdf *fdf, int x1, int y1, int x2, int y2)
+typedef struct	s_point
 {
-	int dy;
-	int sy;
-	int dx;
-	int sx;
+	double x;
+	double y;
+	double z;
+}				t_point;
 
-	if (x1 == x2 && y1 == y2)
-	{
-		fill_pixel(fdf, 0x00FFFFFF, x1, y1);
-		return ;
-	}
-	dx = x1 - x2;
-	sx = (dx < 0) ? -1 : 1;
-	dy = y1 - y2;
-	sy = (dy < 0) ? -1 : 1;
-	if (abs(dy) < abs(dx))
-	{
-		int m = dy / dx;
-		int b = y1 - m * x1;
-		while (x1 != x2)
+void	drawline_init(t_point *delta, t_point *s, t_point one, t_point two)
+{
+	delta->x = two.x - one.x;
+	s->x = (delta->x < 0) ? -1 : 1;
+	delta->y = two.y - one.y;
+	s->y = (delta->y < 0) ? -1 : 1;
+}
+
+void	draw_line2(t_fdf *ptr, t_point one, t_point two, int color)
+{
+	t_point	delta;
+	t_point	s;
+	double	slope;
+	double	pitch;
+
+	//ft_printf("je trace une ligne entre {%f, %f} et {%f, %f}\n", one.y, one.x, two.y, two.x);
+	drawline_init(&delta, &s, one, two);
+	slope = (fabs(delta.y) < fabs(delta.x)) ? delta.y / delta.x
+		: delta.x / delta.y;
+	pitch = (fabs(delta.y) < fabs(delta.x)) ? one.y - (slope * one.x)
+		: one.x - (slope * one.y);
+	if (fabs(delta.y) < fabs(delta.x))
+		while ((int)round(one.x) != (int)round(two.x))
 		{
-			ft_printf("looping here, x1 = %d and x2 = %d\n", x1, x2);
-			fill_pixel(fdf, 0x00FFFFFF, x1, m * x1 + b);
-			x1 += sx;
+			fill_pixel(ptr, color, (int)round(one.x),
+					(int)lround((slope * one.x) + pitch));
+			one.x += s.x;
 		}
-	}
 	else
-	{
-		int m = dx / dy;
-		int b = x1 - m * y1;
-		while (y1 != y2)
+		while ((int)round(one.y) != (int)round(two.y))
 		{
-			ft_printf("looping here TOO, y1 = %d and y2 = %d sy = %d\n", y1, y2, sy);
-			fill_pixel(fdf, 0x00FFFFFF, m * y1 + b, y1);
-			y1 += sy;
+			fill_pixel(ptr, color, (int)lround((slope * one.y) + pitch),
+					(int)round(one.y));
+			one.y += s.y;
 		}
-	}
-}
-
-void	draw_line2(t_fdf *fdf, int x1, int y1, int x2, int y2)
-{
-	int  x, y, dx, dy, dx1, dy1, px, py, xe, ye, i;
-
-	dx = x2 - x1;
-	dy = y2 - y1;
-
-	dx1 = abs(dx);
-	dy1 = abs(dy);
-
-	px = 2 * dy1 - dx1;
-	py = 2 * dx1 - dy1;
-
-	if (dy1 <= dx1)
-	{
-		if (dx >= 0)
-		{
-			x = x1; y = y1;
-			xe = x2;
-		}
-		else
-		{
-			x = x2;
-			y = y2;
-			xe = x1;
-		}
-		fill_pixel(fdf, 0x00FFFFFF, x, y);
-		for (i = 0; x < xe; i++) {
-			x = x + 1;
-			if (px < 0) {
-				px = px + 2 * dy1;
-			} else {
-				if ((dx < 0 && dy < 0) || (dx > 0 && dy > 0)) {
-					y = y + 1;
-				} else {
-					y = y - 1;
-				}
-				px = px + 2 * (dy1 - dx1);
-			}
-			fill_pixel(fdf, 0x00FFFFFF, x, y);
-		}
-	} else {
-		if (dy >= 0)
-		{
-			x = x1;
-			y = y1;
-			ye = y2;
-		}
-		else
-		{
-			x = x2;
-			y = y2;
-			ye = y1;
-		}
-		fill_pixel(fdf, 0x00FFFFFF, x, y);
-		for (i = 0; y < ye; i++) {
-			y = y + 1;
-			if (py <= 0)
-			{
-				py = py + 2 * dx1;
-			}
-			else
-			{
-				if ((dx < 0 && dy<0) || (dx > 0 && dy > 0)) {
-					x = x + 1;
-				} else {
-					x = x - 1;
-				}
-				py = py + 2 * (dx1 - dy1);
-			}
-			fill_pixel(fdf, 0x00FFFFFF, x, y);
-		}
-	}
-}
-
-int		draw_line(t_fdf *fdf, int x1, int y1, int x2, int y2)
-{
-	int dx;
-	int dy;
-	int e;
-
-	e = x2 - x1;
-	dx = e * 2;
-	dy = (y2 - y1) * 2;
-	while (x1 <= x2)
-	{
-		fill_pixel(fdf, 0x00FFFFFF, x1, y1);
-		x1++;
-		if ((e = e - dy) <= 0)
-		{
-			y1++;
-			e += dx;
-		}
-	}
-	return (0);
 }
 
 /*
 ** Transform coordonates from 2d into ismetric vue
 */
 
-t_map_lst	coords_to_iso(t_map_lst *elem)
+t_map_lst	coords_to_iso(t_map *map, t_map_lst *elem, int vue)
 {
 	t_map_lst iso;
 	int px;
 	int py;
+	int pz;
+	double x1;
+	double y1;
 
-	//ft_printf("Before {y:%d x:%d}\n", elem->y, elem->x);
-	px = elem->x;
-	py = elem->y;
-	iso.x = (px - py) * cos(0.523599);
-	iso.y = - elem->alt + elem->manual_alt + (px + py) * sin(0.523599);
-	//ft_printf("After {y:%d x:%d}\n", elem->y, elem->x);
+	px = elem->x * map->zoom_level;
+	py = elem->y * map->zoom_level;
+	pz = map->zoom_level * 1;
+	if (vue == 0)
+	{
+		//iso.x = (px - py) * cos(0.523599);
+		//iso.y = - elem->alt + elem->manual_alt + (px + py) * sin(0.523599);
+		x1 = (px - py) * cos(0.523599);
+		y1 = - elem->alt + elem->manual_alt + (px + py) * sin(0.523599);
+		iso.y = y1;
+		iso.x = x1;
+	}
+	else
+	{
+		iso.y = (py * cos(0)) + (pz * sin(0));
+		iso.alt = (pz * cos(0)) - (py * sin(0));
+		iso.x = (px * cos(0)) + (iso.alt * sin(0));
+		px = iso.x;
+		iso.x = (iso.x * cos(0)) - (iso.y * sin(0));
+		iso.y = (px * sin(0)) + (iso.y * cos(0));
+	}
+	iso.x += (WIN_WIDTH - (map->line_size * 4)) / 2;
+	iso.y += (WIN_HEIGHT - (map->height_size * 4)) / 2;
+	//ft_printf("Converted point {y:%d x:%d}\n",iso.y , iso.x);
 	return (iso);
 }
 
@@ -209,22 +140,74 @@ int		set_image(t_fdf *fdf)
 {
 	t_map_lst	*lst;
 	t_map_lst	iso;
+	t_map_lst iso2;
+	t_point one;
+	t_point two;
 
 	lst = fdf->map->lst;
 	fdf->mlx->img_ptr = mlx_new_image(fdf->mlx->mlx_ptr, WIN_WIDTH, WIN_HEIGHT);
 	fdf->mlx->data = (unsigned int *)mlx_get_data_addr(fdf->mlx->img_ptr, &fdf->mlx->bpp, &fdf->mlx->size_line, &fdf->mlx->endian);
-	draw_line3(fdf, 60, 30, 50, 10);
+	one.y = 502.0;
+	one.x = 340.0;
+	one.z = 0;
+	two.y = 506.0;
+	two.x = 340.0;
+	two.z = 0;
+	draw_line2(fdf, one, two, 0x00FFFFFF);
 	while (lst)
 	{
 		if (fdf->map->vue == 1)
-			fill_pixel(fdf, lst->color, lst->y, lst->x);
-		else if (!fdf->map->vue)
 		{
-			iso = coords_to_iso(lst);
+			iso = coords_to_iso(fdf->map, lst, fdf->map->vue);
+			one.x = iso.y;
+			one.y = iso.x;
+			one.z = iso.alt;
+			if (lst->next && lst->y == lst->next->y)
+			{
+				iso2 = coords_to_iso(fdf->map, lst->next, fdf->map->vue);
+				two.x = iso2.y;
+				two.y = iso2.x;
+				two.z = iso2.alt;
+				draw_line2(fdf, one , two, 0x00FFFFFF);
+			}
+			if (lst->down && lst->x == lst->down->x)
+			{
+				//ft_printf("Je rentre ici\n");
+				iso2 = coords_to_iso(fdf->map, lst->down, fdf->map->vue);
+				two.x = iso2.y;
+				two.y = iso2.x;
+				two.z = iso2.alt;
+				draw_line2(fdf, one , two, 0x00FFFFFF);
+			}
+			//ft_printf("Je Put pixel a {%d, %d}\n", iso.y, iso.x);
 			fill_pixel(fdf, lst->color, iso.y, iso.x);
 		}
-		//if (lst && lst->next)
-		//	draw_line(fdf, lst->x, lst->y, lst->next->x, lst->next->y);
+		else if (!fdf->map->vue)
+		{
+			iso = coords_to_iso(fdf->map, lst, fdf->map->vue);
+			one.x = iso.y;
+			one.y = iso.x;
+			one.z = iso.alt;
+			//ft_printf("Je Put pixel a {%d, %d}\n", iso.y, iso.x);
+			if (lst->next && lst->y == lst->next->y)
+			{
+				iso2 = coords_to_iso(fdf->map, lst->next, fdf->map->vue);
+				two.x = iso2.y;
+				two.y = iso2.x;
+				two.z = iso2.alt;
+				draw_line2(fdf, one , two, 0x00FFFFFF);
+			}
+			if (lst->down && lst->x == lst->down->x)
+			{
+				//ft_printf("Je rentre ici\n");
+				iso2 = coords_to_iso(fdf->map, lst->down, fdf->map->vue);
+				two.x = iso2.y;
+				two.y = iso2.x;
+				two.z = iso2.alt;
+				draw_line2(fdf, one , two, 0x00FFFFFF);
+			}
+			fill_pixel(fdf, lst->color, iso.y, iso.x);
+		}
 		lst = lst->next;
 	}
 	mlx_put_image_to_window(fdf->mlx->mlx_ptr, fdf->mlx->mlx_win, fdf->mlx->img_ptr, 0, 0);
