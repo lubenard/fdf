@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 17:38:54 by lubenard          #+#    #+#             */
-/*   Updated: 2020/02/28 08:03:05 by lubenard         ###   ########.fr       */
+/*   Updated: 2020/02/29 17:57:01 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,7 @@ int		change_vue(t_fdf *fdf)
 
 int		fill_pixel(t_fdf *fdf, int color, int y, int x)
 {
-	//ft_printf("{y:%d x:%d},\n", y, x);
-	//int form = ((WIN_WIDTH * y) + x) * fdf->map->zoom_level + (WIN_WIDTH / 2);
-	int form = (((WIN_WIDTH * y) + x));// * fdf->map->zoom_level);
+	int form = (((WIN_WIDTH * y) + x));
 	if (x > 0 && y > 0 && x < WIN_WIDTH && y < WIN_HEIGHT)
 		fdf->mlx->data[form] = mlx_get_color_value(fdf->mlx->mlx_ptr, color);
 	return (0);
@@ -63,12 +61,12 @@ void	drawline_init(t_point *delta, t_point *s, t_point one, t_point two)
 	s->y = (delta->y < 0) ? -1 : 1;
 }
 
-void	draw_line2(t_fdf *ptr, t_point one, t_point two, int color)
+void	draw_line(t_fdf *ptr, t_point one, t_point two, int color)
 {
 	t_point	delta;
 	t_point	s;
-	double	slope;
-	double	pitch;
+	double		slope;
+	double		pitch;
 
 	//ft_printf("je trace une ligne entre {%f, %f} et {%f, %f}\n", one.y, one.x, two.y, two.x);
 	drawline_init(&delta, &s, one, two);
@@ -98,24 +96,18 @@ void	draw_line2(t_fdf *ptr, t_point one, t_point two, int color)
 
 t_map_lst	coords_to_iso(t_map *map, t_map_lst *elem, int vue)
 {
-	t_map_lst iso;
-	int px;
-	int py;
-	int pz;
-	double x1;
-	double y1;
+	t_map_lst	iso;
+	int			px;
+	int			py;
+	int			pz;
 
 	px = elem->x * map->zoom_level;
 	py = elem->y * map->zoom_level;
 	pz = map->zoom_level * 1;
 	if (vue == 0)
 	{
-		//iso.x = (px - py) * cos(0.523599);
-		//iso.y = - elem->alt + elem->manual_alt + (px + py) * sin(0.523599);
-		x1 = (px - py) * cos(0.523599);
-		y1 = - elem->alt + elem->manual_alt + (px + py) * sin(0.523599);
-		iso.y = y1;
-		iso.x = x1;
+		iso.y = - elem->alt + elem->manual_alt + (px + py) * sin(0.523599);
+		iso.x = (px - py) * cos(0.523599);
 	}
 	else
 	{
@@ -128,7 +120,6 @@ t_map_lst	coords_to_iso(t_map *map, t_map_lst *elem, int vue)
 	}
 	iso.x += (WIN_WIDTH - (map->line_size * 4)) / 2;
 	iso.y += (WIN_HEIGHT - (map->height_size * 4)) / 2;
-	//ft_printf("Converted point {y:%d x:%d}\n",iso.y , iso.x);
 	return (iso);
 }
 
@@ -149,73 +140,33 @@ int		set_image(t_fdf *fdf)
 	fdf->mlx->data = (unsigned int *)mlx_get_data_addr(fdf->mlx->img_ptr, &fdf->mlx->bpp, &fdf->mlx->size_line, &fdf->mlx->endian);
 	while (lst)
 	{
-		if (fdf->map->vue == 1)
+		iso = coords_to_iso(fdf->map, lst, fdf->map->vue);
+		one.x = iso.y;
+		one.y = iso.x;
+		one.z = iso.alt;
+		if (lst->next && lst->y == lst->next->y)
 		{
-			iso = coords_to_iso(fdf->map, lst, fdf->map->vue);
-			one.x = iso.y;
-			one.y = iso.x;
-			one.z = iso.alt;
-			if (lst->next && lst->y == lst->next->y)
-			{
-				iso2 = coords_to_iso(fdf->map, lst->next, fdf->map->vue);
-				two.x = iso2.y;
-				two.y = iso2.x;
-				two.z = iso2.alt;
-				if (lst->alt >= 10 && lst->next->alt >= 10)
-					draw_line2(fdf, one , two, 0x00FF0000);
-				else
-					draw_line2(fdf, one , two, 0x00FFFFFF);
-			}
-			if (lst->down && lst->x == lst->down->x)
-			{
-				//ft_printf("Je rentre ici\n");
-				iso2 = coords_to_iso(fdf->map, lst->down, fdf->map->vue);
-				two.x = iso2.y;
-				two.y = iso2.x;
-				two.z = iso2.alt;
-				if (lst->alt >= 10 && lst->next->alt >= 10)
-					draw_line2(fdf, one , two, 0x00FF0000);
-				else
-					draw_line2(fdf, one , two, 0x00FFFFFF);
-				//draw_line2(fdf, one , two, 0x00FFFFFF);
-			}
-			//ft_printf("Je Put pixel a {%d, %d}\n", iso.y, iso.x);
-			fill_pixel(fdf, lst->color, iso.y, iso.x);
+			iso2 = coords_to_iso(fdf->map, lst->next, fdf->map->vue);
+			two.x = iso2.y;
+			two.y = iso2.x;
+			two.z = iso2.alt;
+			if (lst->alt >= 10 && lst->next->alt >= 10)
+				draw_line(fdf, one, two, 0x00FF0000);
+			else
+				draw_line(fdf, one, two, 0x00FFFFFF);
 		}
-		else if (!fdf->map->vue)
+		if (lst->down && lst->x == lst->down->x)
 		{
-			iso = coords_to_iso(fdf->map, lst, fdf->map->vue);
-			one.x = iso.y;
-			one.y = iso.x;
-			one.z = iso.alt;
-			//ft_printf("Je Put pixel a {%d, %d}\n", iso.y, iso.x);
-			if (lst->next && lst->y == lst->next->y)
-			{
-				iso2 = coords_to_iso(fdf->map, lst->next, fdf->map->vue);
-				two.x = iso2.y;
-				two.y = iso2.x;
-				two.z = iso2.alt;
-				if (lst->alt >= 10 && lst->next->alt >= 10)
-					draw_line2(fdf, one , two, 0x00FF0000);
-				else
-					draw_line2(fdf, one , two, 0x00FFFFFF);
-				//draw_line2(fdf, one , two, 0x00FFFFFF);
-			}
-			if (lst->down && lst->x == lst->down->x)
-			{
-				//ft_printf("Je rentre ici\n");
-				iso2 = coords_to_iso(fdf->map, lst->down, fdf->map->vue);
-				two.x = iso2.y;
-				two.y = iso2.x;
-				two.z = iso2.alt;
-				if (lst->alt >= 10 && lst->next->alt >= 10)
-					draw_line2(fdf, one , two, 0x00FF0000);
-				else
-					draw_line2(fdf, one , two, 0x00FFFFFF);
-				//draw_line2(fdf, one , two, 0x00FFFFFF);
-			}
-			fill_pixel(fdf, lst->color, iso.y, iso.x);
+			iso2 = coords_to_iso(fdf->map, lst->down, fdf->map->vue);
+			two.x = iso2.y;
+			two.y = iso2.x;
+			two.z = iso2.alt;
+			if (lst->alt >= 10 && lst->down->alt >= 10)
+				draw_line(fdf, one, two, 0x00FF0000);
+			else
+				draw_line(fdf, one, two, 0x00FFFFFF);
 		}
+		fill_pixel(fdf, lst->color, iso.y, iso.x);
 		lst = lst->next;
 	}
 	mlx_put_image_to_window(fdf->mlx->mlx_ptr, fdf->mlx->mlx_win, fdf->mlx->img_ptr, 0, 0);
@@ -231,6 +182,6 @@ int		draw(t_fdf *fdf)
 {
 	mlx_clear_window(fdf->mlx->mlx_ptr, fdf->mlx->mlx_win);
 	set_image(fdf);
-	//mlx_destroy_image(fdf->mlx->mlx_ptr, fdf->mlx->data);
+	mlx_destroy_image(fdf->mlx->mlx_ptr, fdf->mlx->data);
 	return (0);
 }
