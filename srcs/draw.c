@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 17:38:54 by lubenard          #+#    #+#             */
-/*   Updated: 2020/02/27 18:40:52 by lubenard         ###   ########.fr       */
+/*   Updated: 2020/02/28 08:03:05 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,13 +147,6 @@ int		set_image(t_fdf *fdf)
 	lst = fdf->map->lst;
 	fdf->mlx->img_ptr = mlx_new_image(fdf->mlx->mlx_ptr, WIN_WIDTH, WIN_HEIGHT);
 	fdf->mlx->data = (unsigned int *)mlx_get_data_addr(fdf->mlx->img_ptr, &fdf->mlx->bpp, &fdf->mlx->size_line, &fdf->mlx->endian);
-	one.y = 502.0;
-	one.x = 340.0;
-	one.z = 0;
-	two.y = 506.0;
-	two.x = 340.0;
-	two.z = 0;
-	draw_line2(fdf, one, two, 0x00FFFFFF);
 	while (lst)
 	{
 		if (fdf->map->vue == 1)
@@ -168,7 +161,10 @@ int		set_image(t_fdf *fdf)
 				two.x = iso2.y;
 				two.y = iso2.x;
 				two.z = iso2.alt;
-				draw_line2(fdf, one , two, 0x00FFFFFF);
+				if (lst->alt >= 10 && lst->next->alt >= 10)
+					draw_line2(fdf, one , two, 0x00FF0000);
+				else
+					draw_line2(fdf, one , two, 0x00FFFFFF);
 			}
 			if (lst->down && lst->x == lst->down->x)
 			{
@@ -177,7 +173,11 @@ int		set_image(t_fdf *fdf)
 				two.x = iso2.y;
 				two.y = iso2.x;
 				two.z = iso2.alt;
-				draw_line2(fdf, one , two, 0x00FFFFFF);
+				if (lst->alt >= 10 && lst->next->alt >= 10)
+					draw_line2(fdf, one , two, 0x00FF0000);
+				else
+					draw_line2(fdf, one , two, 0x00FFFFFF);
+				//draw_line2(fdf, one , two, 0x00FFFFFF);
 			}
 			//ft_printf("Je Put pixel a {%d, %d}\n", iso.y, iso.x);
 			fill_pixel(fdf, lst->color, iso.y, iso.x);
@@ -195,7 +195,11 @@ int		set_image(t_fdf *fdf)
 				two.x = iso2.y;
 				two.y = iso2.x;
 				two.z = iso2.alt;
-				draw_line2(fdf, one , two, 0x00FFFFFF);
+				if (lst->alt >= 10 && lst->next->alt >= 10)
+					draw_line2(fdf, one , two, 0x00FF0000);
+				else
+					draw_line2(fdf, one , two, 0x00FFFFFF);
+				//draw_line2(fdf, one , two, 0x00FFFFFF);
 			}
 			if (lst->down && lst->x == lst->down->x)
 			{
@@ -204,7 +208,11 @@ int		set_image(t_fdf *fdf)
 				two.x = iso2.y;
 				two.y = iso2.x;
 				two.z = iso2.alt;
-				draw_line2(fdf, one , two, 0x00FFFFFF);
+				if (lst->alt >= 10 && lst->next->alt >= 10)
+					draw_line2(fdf, one , two, 0x00FF0000);
+				else
+					draw_line2(fdf, one , two, 0x00FFFFFF);
+				//draw_line2(fdf, one , two, 0x00FFFFFF);
 			}
 			fill_pixel(fdf, lst->color, iso.y, iso.x);
 		}
