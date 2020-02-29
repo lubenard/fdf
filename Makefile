@@ -15,7 +15,7 @@ CFLAGS		= -Wall -Wextra -Werror -g3
 
 NAME		= fdf
 LIBFT		= libft
-LIBX_UNIX	= minilibx/unix
+LIBX_UNIX	= minilibx/X11
 LIBX_SIERRA	= minilibx/sierra
 LIBX_MOJAVE	= minilibx/mojave
 LIBX		= $(LIBX_SIERRA)
@@ -84,23 +84,23 @@ endif
 $(NAME): $(OBJS)
 	@$(MAKE) -q -C $(LIBFT) || $(MAKE) -j4 -C $(LIBFT)
 	@echo -e -n "\n${_BLUE}${_BOLD}[Create Executable] $(NAME)${_END}"
-	@make -j4 -C $(LIBX_SIERRA) &> /dev/null
+	#@make -j4 -C $(LIBX_SIERRA) &> /dev/null
 	#@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L./$(LIBFT) -lft 
-	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L./$(LIBFT) -lft -L ./$(LIBX_SIERRA) -lmlx -framework OpenGL -framework AppKit
+	#@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L./$(LIBFT) -lft -L ./$(LIBX_SIERRA) -lmlx -framework OpenGL -framework AppKit
 	@echo -e "\n${_GREEN}${_BOLD}$(NAME) done.${_END}"
 
 unix_compil:
-	@echo "${_RED}Compiling UNIX minilibx${_END}"
+	@echo "${_RED}Compiling UNIX minilibx at $(LIBX_UNIX) ${_END}"
 	@make -j4 -C $(LIBX_UNIX)
-	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L $(LIBFT) -lft -L ./$(LIBX_UNIX) -lmlx -lXext -lX11
+	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L $(LIBFT) -lft -L ./$(LIBX_UNIX) -lm -lmlx -lXext -lX11
 
 mojave_compil:
-	@echo "${_RED}Compiling MOJAVE minilibx${_END}"
+	@echo "${_RED}Compiling MOJAVE minilibx at $(LIBX_MOJAVE) ${_END}"
 	@make -j4 -C $(LIBX_MOJAVE)
 	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L $(LIBFT) -lft -L ./$(LIBX_MOJAVE) -lmlx -framework OpenGL -framework AppKit
 
 sierra_compil:
-	@echo "${_RED}Compiling SIERRA minilibx${_END}"
+	@echo "${_RED}Compiling SIERRA minilibx $(LIBX_SIERRA) ${_END}"
 	@make -j4 -C $(LIBX_SIERRA) &> /dev/null
 	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L./$(LIBFT) -lft -L ./$(LIBX_SIERRA) -lmlx -framework OpenGL -framework AppKit
 
