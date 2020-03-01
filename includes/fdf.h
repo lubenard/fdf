@@ -6,7 +6,7 @@
 /*   By: lubenard <lubenard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 23:57:40 by lubenard          #+#    #+#             */
-/*   Updated: 2020/02/26 14:22:07 by lubenard         ###   ########.fr       */
+/*   Updated: 2020/03/01 10:56:03 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,13 @@
 
 # define WIN_WIDTH 1080
 # define WIN_HEIGHT 720
+
+typedef struct	s_point
+{
+	double x;
+	double y;
+	double z;
+}				t_point;
 
 typedef struct			s_map_lst
 {

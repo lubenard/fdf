@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 17:38:54 by lubenard          #+#    #+#             */
-/*   Updated: 2020/02/29 17:57:01 by lubenard         ###   ########.fr       */
+/*   Updated: 2020/03/01 10:56:06 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,6 @@ int		fill_pixel(t_fdf *fdf, int color, int y, int x)
 /*
 ** Make segment using Bresenham algorythm
 */
-
-typedef struct	s_point
-{
-	double x;
-	double y;
-	double z;
-}				t_point;
 
 void	drawline_init(t_point *delta, t_point *s, t_point one, t_point two)
 {
