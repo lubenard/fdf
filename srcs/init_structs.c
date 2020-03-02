@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/25 15:13:45 by lubenard          #+#    #+#             */
-/*   Updated: 2020/02/27 18:36:39 by lubenard         ###   ########.fr       */
+/*   Updated: 2020/03/02 18:15:36 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ t_fdf		*init_fdf_structs(void)
 	fdf->mlx->bpp = 0;
 	fdf->mlx->size_line = 0;
 	fdf->mlx->endian = 0;
+	fdf->mlx->colors = 1;
 	fdf->map->last = NULL;
 	fdf->map->lst = NULL;
 	fdf->map->size = 0;

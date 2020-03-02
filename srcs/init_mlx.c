@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 11:58:55 by lubenard          #+#    #+#             */
-/*   Updated: 2020/02/25 17:47:35 by lubenard         ###   ########.fr       */
+/*   Updated: 2020/03/02 18:19:11 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 ** 125: key down
 ** 123: key left
 ** 124: key right
+** 15:  key r (change colors)
 ** 69:  key + (zoom in)
 ** 78:  key - (zoom out)
 ** 53:  key escape (quit)
@@ -51,6 +52,8 @@ int		keys(int keycode, void *param)
 		change_alt((t_fdf *)param, -1);
 	else if (keycode == 9)
 		change_vue((t_fdf *)param);
+	else if (keycode == 15)
+		change_colors((t_fdf *)param);
 	return (0);
 }
 

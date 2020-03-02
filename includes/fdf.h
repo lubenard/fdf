@@ -6,7 +6,7 @@
 /*   By: lubenard <lubenard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 23:57:40 by lubenard          #+#    #+#             */
-/*   Updated: 2020/03/01 10:56:03 by lubenard         ###   ########.fr       */
+/*   Updated: 2020/03/02 18:19:37 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ typedef struct	s_point
 {
 	double x;
 	double y;
-	double z;
+	double alt;
 }				t_point;
 
 typedef struct			s_map_lst
@@ -57,6 +57,7 @@ typedef struct			s_mlx
 	void				*img_ptr;
 	unsigned int		*data;
 	int					bpp;
+	int					colors;
 	int					size_line;
 	int					endian;
 }						t_mlx;
@@ -104,5 +105,6 @@ int						move_y(t_fdf *map, int index);
 int						zoom(t_fdf *map, int index);
 int						change_vue(t_fdf *fdf);
 int						change_alt(t_fdf *map, int index);
+int						change_colors(t_fdf *fdf);
 
 #endif

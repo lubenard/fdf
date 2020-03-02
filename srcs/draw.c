@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 17:38:54 by lubenard          #+#    #+#             */
-/*   Updated: 2020/03/01 10:56:06 by lubenard         ###   ########.fr       */
+/*   Updated: 2020/03/02 18:16:56 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,16 @@ int		change_vue(t_fdf *fdf)
 		fdf->map->vue = 1;
 	else if (fdf->map->vue == 1)
 		fdf->map->vue = 0;
+	draw(fdf);
+	return (0);
+}
+
+int		change_colors(t_fdf *fdf)
+{
+	if (fdf->mlx->colors == 0)
+		fdf->mlx->colors = 1;
+	else if (fdf->mlx->colors == 1)
+		fdf->mlx->colors = 0;
 	draw(fdf);
 	return (0);
 }
@@ -61,7 +71,6 @@ void	draw_line(t_fdf *ptr, t_point one, t_point two, int color)
 	double		slope;
 	double		pitch;
 
-	//ft_printf("je trace une ligne entre {%f, %f} et {%f, %f}\n", one.y, one.x, two.y, two.x);
 	drawline_init(&delta, &s, one, two);
 	slope = (fabs(delta.y) < fabs(delta.x)) ? delta.y / delta.x
 		: delta.x / delta.y;
@@ -116,6 +125,22 @@ t_map_lst	coords_to_iso(t_map *map, t_map_lst *elem, int vue)
 	return (iso);
 }
 
+int		colors(t_map_lst *lst, t_map_lst *lst_next, int colors)
+{
+	if (colors)
+	{
+		if (lst->alt >= 100 && lst_next->alt >= 100)
+		return (0x00FF0000);
+	else if (lst->alt <= 0 && lst_next->alt <= 0)
+		return(0x000000FF);
+	else if (lst->alt > 0 && lst_next->alt < 100)
+		return(0x00228B22);
+	else
+		return(0x007FFFD4);
+	}
+	return (0x00FFFFFF);
+}
+
 /*
 ** Create new image and set it ready to draw
 */
@@ -136,30 +161,24 @@ int		set_image(t_fdf *fdf)
 		iso = coords_to_iso(fdf->map, lst, fdf->map->vue);
 		one.x = iso.y;
 		one.y = iso.x;
-		one.z = iso.alt;
+		one.alt = iso.alt;
 		if (lst->next && lst->y == lst->next->y)
 		{
 			iso2 = coords_to_iso(fdf->map, lst->next, fdf->map->vue);
 			two.x = iso2.y;
 			two.y = iso2.x;
-			two.z = iso2.alt;
-			if (lst->alt >= 10 && lst->next->alt >= 10)
-				draw_line(fdf, one, two, 0x00FF0000);
-			else
-				draw_line(fdf, one, two, 0x00FFFFFF);
+			two.alt = iso2.alt;
+			draw_line(fdf, one, two, colors(lst, lst->next, fdf->mlx->colors));
 		}
 		if (lst->down && lst->x == lst->down->x)
 		{
 			iso2 = coords_to_iso(fdf->map, lst->down, fdf->map->vue);
 			two.x = iso2.y;
 			two.y = iso2.x;
-			two.z = iso2.alt;
-			if (lst->alt >= 10 && lst->down->alt >= 10)
-				draw_line(fdf, one, two, 0x00FF0000);
-			else
-				draw_line(fdf, one, two, 0x00FFFFFF);
+			two.alt = iso2.alt;
+			draw_line(fdf, one, two, colors(lst, lst->down, fdf->mlx->colors));
 		}
-		fill_pixel(fdf, lst->color, iso.y, iso.x);
+		//fill_pixel(fdf, lst->color, iso.y, iso.x);
 		lst = lst->next;
 	}
 	mlx_put_image_to_window(fdf->mlx->mlx_ptr, fdf->mlx->mlx_win, fdf->mlx->img_ptr, 0, 0);

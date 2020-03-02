@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/25 12:56:51 by lubenard          #+#    #+#             */
-/*   Updated: 2020/02/26 14:24:08 by lubenard         ###   ########.fr       */
+/*   Updated: 2020/03/02 17:23:58 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ int		move_x(t_fdf *fdf, int index)
 	map_tmp = fdf->map->lst;
 	while (map_tmp)
 	{
-		map_tmp->x += index;
+		map_tmp->x += (fdf->map->zoom_level) ?
+			index * (fdf->map->zoom_level * 2) : index;
 		map_tmp = map_tmp->next;
 	}
 	draw(fdf);
@@ -55,7 +56,8 @@ int		move_y(t_fdf *fdf, int index)
 	map_tmp = fdf->map->lst;
 	while (map_tmp)
 	{
-		map_tmp->y += index;
+		map_tmp->y += (fdf->map->zoom_level) ?
+			index * (fdf->map->zoom_level * 2) : index;
 		map_tmp = map_tmp->next;
 	}
 	draw(fdf);
