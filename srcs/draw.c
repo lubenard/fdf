@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 17:38:54 by lubenard          #+#    #+#             */
-/*   Updated: 2020/03/02 18:16:56 by lubenard         ###   ########.fr       */
+/*   Updated: 2020/03/03 14:50:01 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,88 +15,32 @@
 #include <math.h>
 
 /*
-** Vue:
-** 0: iso
-** 1: flat
-*/
-
-int		change_vue(t_fdf *fdf)
-{
-	if (fdf->map->vue == 0)
-		fdf->map->vue = 1;
-	else if (fdf->map->vue == 1)
-		fdf->map->vue = 0;
-	draw(fdf);
-	return (0);
-}
-
-int		change_colors(t_fdf *fdf)
-{
-	if (fdf->mlx->colors == 0)
-		fdf->mlx->colors = 1;
-	else if (fdf->mlx->colors == 1)
-		fdf->mlx->colors = 0;
-	draw(fdf);
-	return (0);
-}
-
-/*
 ** Fill pixel at the right position, gave by x and y
 */
 
 int		fill_pixel(t_fdf *fdf, int color, int y, int x)
 {
-	int form = (((WIN_WIDTH * y) + x));
+	int form;
+
+	form = (((WIN_WIDTH * y) + x));
 	if (x > 0 && y > 0 && x < WIN_WIDTH && y < WIN_HEIGHT)
 		fdf->mlx->data[form] = mlx_get_color_value(fdf->mlx->mlx_ptr, color);
 	return (0);
 }
 
-/*
-** Make segment using Bresenham algorythm
-*/
-
-void	drawline_init(t_point *delta, t_point *s, t_point one, t_point two)
+t_point		ft_ret_coord(t_map_lst *iso)
 {
-	delta->x = two.x - one.x;
-	s->x = (delta->x < 0) ? -1 : 1;
-	delta->y = two.y - one.y;
-	s->y = (delta->y < 0) ? -1 : 1;
-}
+	t_point point;
 
-void	draw_line(t_fdf *ptr, t_point one, t_point two, int color)
-{
-	t_point	delta;
-	t_point	s;
-	double		slope;
-	double		pitch;
-
-	drawline_init(&delta, &s, one, two);
-	slope = (fabs(delta.y) < fabs(delta.x)) ? delta.y / delta.x
-		: delta.x / delta.y;
-	pitch = (fabs(delta.y) < fabs(delta.x)) ? one.y - (slope * one.x)
-		: one.x - (slope * one.y);
-	if (fabs(delta.y) < fabs(delta.x))
-		while ((int)round(one.x) != (int)round(two.x))
-		{
-			fill_pixel(ptr, color, (int)round(one.x),
-					(int)lround((slope * one.x) + pitch));
-			one.x += s.x;
-		}
-	else
-		while ((int)round(one.y) != (int)round(two.y))
-		{
-			fill_pixel(ptr, color, (int)lround((slope * one.y) + pitch),
-					(int)round(one.y));
-			one.y += s.y;
-		}
+	
+	return (point);
 }
 
 /*
 ** Transform coordonates from 2d into ismetric vue
 */
 
-t_map_lst	coords_to_iso(t_map *map, t_map_lst *elem, int vue)
+t_point		coords_to_iso(t_map *map, t_map_lst *elem, int vue)
 {
 	t_map_lst	iso;
 	int			px;
@@ -108,7 +52,7 @@ t_map_lst	coords_to_iso(t_map *map, t_map_lst *elem, int vue)
 	pz = map->zoom_level * 1;
 	if (vue == 0)
 	{
-		iso.y = - elem->alt + elem->manual_alt + (px + py) * sin(0.523599);
+		iso.y = -elem->alt + elem->manual_alt + (px + py) * sin(0.523599);
 		iso.x = (px - py) * cos(0.523599);
 	}
 	else
@@ -122,23 +66,7 @@ t_map_lst	coords_to_iso(t_map *map, t_map_lst *elem, int vue)
 	}
 	iso.x += (WIN_WIDTH - (map->line_size * 4)) / 2;
 	iso.y += (WIN_HEIGHT - (map->height_size * 4)) / 2;
-	return (iso);
-}
-
-int		colors(t_map_lst *lst, t_map_lst *lst_next, int colors)
-{
-	if (colors)
-	{
-		if (lst->alt >= 100 && lst_next->alt >= 100)
-		return (0x00FF0000);
-	else if (lst->alt <= 0 && lst_next->alt <= 0)
-		return(0x000000FF);
-	else if (lst->alt > 0 && lst_next->alt < 100)
-		return(0x00228B22);
-	else
-		return(0x007FFFD4);
-	}
-	return (0x00FFFFFF);
+	return (ft_ret_coord(iso));
 }
 
 /*
@@ -149,9 +77,9 @@ int		set_image(t_fdf *fdf)
 {
 	t_map_lst	*lst;
 	t_map_lst	iso;
-	t_map_lst iso2;
-	t_point one;
-	t_point two;
+	t_map_lst	iso2;
+	t_point		one;
+	t_point		two;
 
 	lst = fdf->map->lst;
 	fdf->mlx->img_ptr = mlx_new_image(fdf->mlx->mlx_ptr, WIN_WIDTH, WIN_HEIGHT);
@@ -178,7 +106,6 @@ int		set_image(t_fdf *fdf)
 			two.alt = iso2.alt;
 			draw_line(fdf, one, two, colors(lst, lst->down, fdf->mlx->colors));
 		}
-		//fill_pixel(fdf, lst->color, iso.y, iso.x);
 		lst = lst->next;
 	}
 	mlx_put_image_to_window(fdf->mlx->mlx_ptr, fdf->mlx->mlx_win, fdf->mlx->img_ptr, 0, 0);

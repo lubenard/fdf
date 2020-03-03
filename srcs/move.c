@@ -6,11 +6,31 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/25 12:56:51 by lubenard          #+#    #+#             */
-/*   Updated: 2020/03/02 17:23:58 by lubenard         ###   ########.fr       */
+/*   Updated: 2020/03/03 14:37:24 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
+/*
+** Vue:
+** 0: iso
+** 1: flat
+*/
+
+int		change_vue(t_fdf *fdf)
+{
+	if (fdf->map->vue == 0)
+		fdf->map->vue = 1;
+	else if (fdf->map->vue == 1)
+		fdf->map->vue = 0;
+	draw(fdf);
+	return (0);
+}
+
+/*
+** Zoom and dezoom on keypress
+*/
 
 int		zoom(t_fdf *fdf, int index)
 {
@@ -18,6 +38,10 @@ int		zoom(t_fdf *fdf, int index)
 	draw(fdf);
 	return (0);
 }
+
+/*
+** Change altitude of points if they are != 0
+*/
 
 int		change_alt(t_fdf *fdf, int index)
 {
@@ -34,6 +58,10 @@ int		change_alt(t_fdf *fdf, int index)
 	return (0);
 }
 
+/*
+** Move the image on x axe
+*/
+
 int		move_x(t_fdf *fdf, int index)
 {
 	t_map_lst *map_tmp;
@@ -48,6 +76,10 @@ int		move_x(t_fdf *fdf, int index)
 	draw(fdf);
 	return (0);
 }
+
+/*
+** Move the image on y axe
+*/
 
 int		move_y(t_fdf *fdf, int index)
 {

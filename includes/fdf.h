@@ -6,7 +6,7 @@
 /*   By: lubenard <lubenard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 23:57:40 by lubenard          #+#    #+#             */
-/*   Updated: 2020/03/02 18:19:37 by lubenard         ###   ########.fr       */
+/*   Updated: 2020/03/03 14:44:42 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,12 @@
 # define WIN_WIDTH 1080
 # define WIN_HEIGHT 720
 
-typedef struct	s_point
+typedef struct			s_point
 {
-	double x;
-	double y;
-	double alt;
-}				t_point;
+	double				x;
+	double				y;
+	double				alt;
+}						t_point;
 
 typedef struct			s_map_lst
 {
@@ -87,6 +87,10 @@ int						get_map(t_fdf **fdf, int nbr_files, char **files);
 
 int						init_mlx(t_fdf *fdf);
 int						draw(t_fdf *fdf);
+int						colors(t_map_lst *lst, t_map_lst *lst_next, int colors);
+void					draw_line(t_fdf *ptr, t_point one, t_point two,
+int color);
+int						fill_pixel(t_fdf *fdf, int color, int y, int x);
 
 /*
 ** Utils
