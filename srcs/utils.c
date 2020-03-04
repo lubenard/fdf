@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 16:40:47 by lubenard          #+#    #+#             */
-/*   Updated: 2020/03/04 09:38:39 by lubenard         ###   ########.fr       */
+/*   Updated: 2020/03/04 11:16:00 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 ** Used to invert position and store them into t_point struct
 */
 
-t_point		ft_ret_coord(t_map_lst iso)
+t_point	ft_ret_coord(t_map_lst iso)
 {
 	t_point point;
 

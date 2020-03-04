@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 17:38:54 by lubenard          #+#    #+#             */
-/*   Updated: 2020/03/04 10:30:24 by lubenard         ###   ########.fr       */
+/*   Updated: 2020/03/04 12:12:05 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int		fill_pixel(t_fdf *fdf, int color, int y, int x)
 ** Transform coordonates from 2d into ismetric vue
 */
 
-t_point		coords_to_iso(t_map *map, t_map_lst *elem, int vue)
+t_point	coords_to_iso(t_map *map, t_map_lst *elem, int vue)
 {
 	t_map_lst	iso;
 	int			px;
@@ -42,9 +42,9 @@ t_point		coords_to_iso(t_map *map, t_map_lst *elem, int vue)
 	px = elem->x * map->zoom_level;
 	py = elem->y * map->zoom_level;
 	pz = map->zoom_level;
-	if (vue == 0)
+	if (!vue)
 	{
-		iso.y = -elem->alt + elem->manual_alt + (px + py) * sin(0.523599);
+		iso.y = -elem->alt * elem->manual_alt + (px + py) * sin(0.523599);
 		iso.x = (px - py) * cos(0.523599);
 	}
 	else
@@ -69,7 +69,7 @@ int		set_image(t_fdf *fdf)
 	t_point		two;
 
 	lst = fdf->map->lst;
-		while (lst)
+	while (lst)
 	{
 		one = coords_to_iso(fdf->map, lst, fdf->map->vue);
 		if (lst->next && lst->y == lst->next->y)

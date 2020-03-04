@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 11:58:55 by lubenard          #+#    #+#             */
-/*   Updated: 2020/03/04 10:21:01 by lubenard         ###   ########.fr       */
+/*   Updated: 2020/03/04 11:52:18 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,9 @@ int		keys(int keycode, void *param)
 	else if (keycode == 78)
 		zoom((t_fdf *)param, -2);
 	else if (keycode == 24)
-		change_alt((t_fdf *)param, 1);
-	else if (keycode == 27)
 		change_alt((t_fdf *)param, -1);
+	else if (keycode == 27)
+		change_alt((t_fdf *)param, 1);
 	else if (keycode == 9)
 		change_vue((t_fdf *)param);
 	else if (keycode == 15)
