@@ -6,7 +6,7 @@
 #    By: lubenard <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/12 18:13:02 by lubenard          #+#    #+#              #
-#    Updated: 2020/03/03 14:30:45 by lubenard         ###   ########.fr        #
+#    Updated: 2020/03/04 14:45:05 by lubenard         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -63,32 +63,27 @@ _WHITE		= \x1b[37m
 
 FSANITIZE	= false
 
+##### Customized rule to compile for specific version #####
+
 all: $(NAME)
 
 ifeq ($(FSANITIZE), true)
-CFLAGS += -fsanitize=address
+ CFLAGS += -fsanitize=address
+else ifeq ($(UNIX), true)
+ LIBX = $(LIBX_UNIX)
+ all: $(OBJS) unix_compil
+else ifeq ($(SIERRA), true)
+ all: $(OBJS) sierra_compil
+else ifeq ($(MOJAVE), true)
+ LIBX = $(LIBX_MOJAVE)
+ all: $(OBJS) mojave_compil
+else
+ all: $(OBJS) sierra_compil
 endif
 
-ifeq ($(UNIX), true)
-LIBX = $(LIBX_UNIX)
-all: $(OBJS) unix_compil
-endif
-
-ifeq ($(SIERRA), true)
-all: $(OBJS) sierra_compil
-endif
-
-ifeq ($(MOJAVE), true)
-LIBX = $(LIBX_MOJAVE)
-all: $(OBJS) mojave_compil
-endif
-
-$(NAME): $(OBJS) 
+$(NAME): $(OBJS)
 	@$(MAKE) -q -C $(LIBFT) || $(MAKE) -j4 -C $(LIBFT)
 	@echo -e -n "\n${_BLUE}${_BOLD}[Create Executable] $(NAME)${_END}"
-	#@make -j4 -C $(LIBX_SIERRA) &> /dev/null
-	#@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L./$(LIBFT) -lft 
-	#@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L./$(LIBFT) -lft -L ./$(LIBX_SIERRA) -lmlx -framework OpenGL -framework AppKit
 	@echo -e "\n${_GREEN}${_BOLD}$(NAME) done.${_END}"
 
 unix_compil:
@@ -136,12 +131,12 @@ re: fclean
 	@$(MAKE)
 
 norm:
-	@norminette $(INCDIR) $(SRCSDIR) | grep "Warning\|Error" || true
-	@echo "Norm done!"
+	@norminette $(INCDIR) $(SRCSDIR)
+	@echo "Norm $(_GREEN)done!$(_END)"
 
 check_error:
-	@grep -rn "printf" srcs | grep -v "ft_"
-	@grep -rn "stdio.h" srcs
+	@grep -rn "printf" srcs/*.c | grep -v "ft_"
+	@grep -rn "stdio.h" srcs/*.c
 
 unix: all
 	@make -q -C $(LIBX_UNIX) || $(MAKE) -C $(LIBX_UNIX)
