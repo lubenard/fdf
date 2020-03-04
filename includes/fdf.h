@@ -6,7 +6,7 @@
 /*   By: lubenard <lubenard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 23:57:40 by lubenard          #+#    #+#             */
-/*   Updated: 2020/03/03 14:44:42 by lubenard         ###   ########.fr       */
+/*   Updated: 2020/03/04 09:39:47 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ int						colors(t_map_lst *lst, t_map_lst *lst_next, int colors);
 void					draw_line(t_fdf *ptr, t_point one, t_point two,
 int color);
 int						fill_pixel(t_fdf *fdf, int color, int y, int x);
+t_point					ft_ret_coord(t_map_lst iso);
 
 /*
 ** Utils

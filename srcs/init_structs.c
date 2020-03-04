@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/25 15:13:45 by lubenard          #+#    #+#             */
-/*   Updated: 2020/03/02 18:15:36 by lubenard         ###   ########.fr       */
+/*   Updated: 2020/03/04 09:47:12 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ t_map_lst	*create_new_elem(void)
 	elem->x = 0;
 	elem->y = 0;
 	elem->alt = 0;
-	elem->manual_alt = 0;
+	elem->manual_alt = 1;
 	elem->color = 0x00FFFFFF;
 	elem->down = NULL;
 	elem->up = NULL;

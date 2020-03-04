@@ -6,12 +6,11 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 11:58:55 by lubenard          #+#    #+#             */
-/*   Updated: 2020/03/02 18:19:11 by lubenard         ###   ########.fr       */
+/*   Updated: 2020/03/04 10:21:01 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <mlx.h>
-#include <stdlib.h>
 #include "fdf.h"
 
 /*
@@ -35,17 +34,17 @@ int		keys(int keycode, void *param)
 	if (keycode == 53)
 		quit_fdf((t_fdf *)param);
 	else if (keycode == 126)
-		move_y((t_fdf *)param, -1);
+		move_y((t_fdf *)param, -2);
 	else if (keycode == 125)
-		move_y((t_fdf *)param, 1);
+		move_y((t_fdf *)param, 2);
 	else if (keycode == 123)
-		move_x((t_fdf *)param, -1);
+		move_x((t_fdf *)param, -2);
 	else if (keycode == 124)
-		move_x((t_fdf *)param, 1);
+		move_x((t_fdf *)param, 2);
 	else if (keycode == 69)
-		zoom((t_fdf *)param, 1);
+		zoom((t_fdf *)param, 2);
 	else if (keycode == 78)
-		zoom((t_fdf *)param, -1);
+		zoom((t_fdf *)param, -2);
 	else if (keycode == 24)
 		change_alt((t_fdf *)param, 1);
 	else if (keycode == 27)

@@ -6,11 +6,29 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 16:40:47 by lubenard          #+#    #+#             */
-/*   Updated: 2020/02/25 14:34:29 by lubenard         ###   ########.fr       */
+/*   Updated: 2020/03/04 09:38:39 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
+/*
+** Used to invert position and store them into t_point struct
+*/
+
+t_point		ft_ret_coord(t_map_lst iso)
+{
+	t_point point;
+
+	point.x = iso.y;
+	point.y = iso.x;
+	point.alt = iso.alt;
+	return (point);
+}
+
+/*
+** Quit fdf, freeing everything. Triggered by ESC key
+*/
 
 void	quit_fdf(t_fdf *fdf)
 {
