@@ -6,7 +6,7 @@
 #    By: lubenard <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/12 18:13:02 by lubenard          #+#    #+#              #
-#    Updated: 2020/03/04 14:45:05 by lubenard         ###   ########.fr        #
+#    Updated: 2020/03/04 16:01:58 by lubenard         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -93,7 +93,7 @@ unix_compil:
 
 mojave_compil:
 	@echo "${_RED}Compiling MOJAVE minilibx at $(LIBX_MOJAVE) ${_END}"
-	@make -j4 -C $(LIBX_MOJAVE)
+	@make -C $(LIBX_MOJAVE)
 	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L $(LIBFT) -lft -L ./$(LIBX_MOJAVE) -lmlx -framework OpenGL -framework AppKit
 
 sierra_compil:

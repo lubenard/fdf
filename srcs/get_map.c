@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 11:03:08 by lubenard          #+#    #+#             */
-/*   Updated: 2020/02/27 12:45:08 by lubenard         ###   ########.fr       */
+/*   Updated: 2020/03/04 18:01:04 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,12 @@ int		get_map(t_fdf **fdf, int nbr_files, char **files)
 		return (error("Error: usage: ./fdf map\n"));
 	else
 	{
-		if ((fd = open(files[1], O_RDONLY)) == -1)
+		if ((fd = open(files[1], O_DIRECTORY)) != -1)
+		{
+			close(fd);
+			return (error("You tried to put a folder inside...\n"));
+		}
+		else if ((fd = open(files[1], O_RDONLY)) == -1)
 			return (error("Could not open the file\n"));
 		if (!(*fdf = init_fdf_structs()))
 			return (error("Malloc failed when initialising structs\n"));
