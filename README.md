@@ -27,17 +27,19 @@ You can launch all the files in the maps folder
 
 ## Keyboard bindings:
 ```
++           : zoom in
+-           : zoom out
 r   : set/unset color
 v   : change vue
 esc : quit fdf
 The arrows are used logically.
 
+
 On MacOs:
-+           : zoom in
--           : zoom out
 shift + "=" : increase relief
 shift + "-" : decrease relief
 
 On unix system:
-
+a           : decrease relief
+e           : increase relief
 ```

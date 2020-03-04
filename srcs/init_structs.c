@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/25 15:13:45 by lubenard          #+#    #+#             */
-/*   Updated: 2020/03/04 09:47:12 by lubenard         ###   ########.fr       */
+/*   Updated: 2020/03/04 21:25:38 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ t_fdf		*init_fdf_structs(void)
 	fdf->map->line_size = 0;
 	fdf->map->height_size = 0;
 	fdf->map->zoom_level = 6;
-	fdf->map->vue = 1;
+	fdf->map->vue = 0;
 	return (fdf);
 }
 

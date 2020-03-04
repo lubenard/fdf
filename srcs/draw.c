@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 17:38:54 by lubenard          #+#    #+#             */
-/*   Updated: 2020/03/04 12:12:05 by lubenard         ###   ########.fr       */
+/*   Updated: 2020/03/04 22:16:11 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,10 @@ int		fill_pixel(t_fdf *fdf, int color, int y, int x)
 
 	form = (((WIN_WIDTH * y) + x));
 	if (x > 0 && y > 0 && x < WIN_WIDTH && y < WIN_HEIGHT)
+	{
+		//write(1,"", 1);
 		fdf->mlx->data[form] = mlx_get_color_value(fdf->mlx->mlx_ptr, color);
+	}
 	return (0);
 }
 
