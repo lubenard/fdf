@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/25 12:56:51 by lubenard          #+#    #+#             */
-/*   Updated: 2020/03/04 12:12:48 by lubenard         ###   ########.fr       */
+/*   Updated: 2020/03/04 12:45:56 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,18 +46,14 @@ int		zoom(t_fdf *fdf, int index)
 int		change_alt(t_fdf *fdf, int index)
 {
 	t_map_lst *map_tmp;
-	static int alt = 1;
 
 	map_tmp = fdf->map->lst;
 	while (map_tmp)
 	{
-		if (map_tmp->alt > 0)
-			map_tmp->manual_alt += index;//+= map_tmp->alt + alt;
-		else if (map_tmp < 0)
-			map_tmp->manual_alt += index;// += alt * index;
+		if (map_tmp->alt != 0)
+			map_tmp->manual_alt += index;
 		map_tmp = map_tmp->next;
 	}
-	alt++;
 	draw(fdf);
 	return (0);
 }
@@ -92,6 +88,8 @@ int		move_y(t_fdf *fdf, int index)
 	while (map_tmp)
 	{
 		map_tmp->y += index;
+		if (!fdf->map->vue)
+			map_tmp->x += index;
 		map_tmp = map_tmp->next;
 	}
 	draw(fdf);
