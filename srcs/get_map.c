@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 11:03:08 by lubenard          #+#    #+#             */
-/*   Updated: 2020/03/05 16:01:25 by lubenard         ###   ########.fr       */
+/*   Updated: 2020/03/05 20:16:18 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,7 @@ void	make_connections(t_map *map, t_map_lst *map_elem)
 int		insert_char(t_map *map, char *lines, size_t x, size_t y)
 {
 	t_map_lst	*map_elem;
-	size_t		i;
 
-	i = 0;
 	map_elem = create_new_elem();
 	if (x == 0 && y == 0)
 		map->lst = map_elem;
@@ -81,7 +79,7 @@ int		format_line(t_map *map, char *line, int y)
 	j = 0;
 	splitted_line = ft_strsplit(line, ' ');
 	map_size_x = ft_2dstrlen(splitted_line);
-	if (!ft_strisascii(line) || (y > 0 && map_size_x != (int)map->line_size))
+	if (!ft_isnumeric(line) || (y > 0 && map_size_x != (int)map->line_size))
 	{
 		write(2, "Hum, the map seems incorrect...\n", 32);
 		ft_2dstrdel(&splitted_line);

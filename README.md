@@ -18,22 +18,8 @@ Otherwise, you can install it via apt:
 sudo apt install freeglut3-dev
 ```
 
-If you are experiencing a black window with nothing appearing under Arch Linux, try replacing the function fill_pixel with this one
+If you are experiencing a black window with nothing appearing under Arch Linux, try to zoom / dezoom.
 
-```
-int		fill_pixel(t_fdf *fdf, int color, int y, int x)
-{
-	int form;
-
-	form = (((WIN_WIDTH * y) + x));
-	if (x > 0 && y > 0 && x < WIN_WIDTH && y < WIN_HEIGHT)
-	{
-    write(1, "", 1);
-    fdf->mlx->data[form] = mlx_get_color_value(fdf->mlx->mlx_ptr, color);
-	}
-  return (0);
-}
-```
 
 ## How to launch it ?
 You can launch it by typing

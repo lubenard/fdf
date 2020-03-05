@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 17:38:54 by lubenard          #+#    #+#             */
-/*   Updated: 2020/03/05 15:15:45 by lubenard         ###   ########.fr       */
+/*   Updated: 2020/03/05 20:25:26 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@
 
 /*
 ** Fill pixel at the right position, gave by x and y
-** If you are under arch linux, you write "write(1, "", 1);" under the condition
-** in fill_pixel. I don't know why but this is workig
 */
 
 int		fill_pixel(t_fdf *fdf, int color, int y, int x)
