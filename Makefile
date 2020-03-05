@@ -6,7 +6,7 @@
 #    By: lubenard <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/12 18:13:02 by lubenard          #+#    #+#              #
-#    Updated: 2020/03/05 12:26:15 by lubenard         ###   ########.fr        #
+#    Updated: 2020/03/05 14:38:31 by lubenard         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -67,7 +67,9 @@ all: $(NAME)
 
 ifeq ($(FSANITIZE), true)
  CFLAGS += -fsanitize=address
-else ifeq ($(UNIX), true)
+endif
+
+ifeq ($(UNIX), true)
  LIBX = $(LIBX_UNIX)
  all: $(OBJS) unix_compil
 else ifeq ($(SIERRA), true)
