@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 11:58:55 by lubenard          #+#    #+#             */
-/*   Updated: 2020/03/04 22:13:53 by lubenard         ###   ########.fr       */
+/*   Updated: 2020/03/05 11:32:37 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@
 
 int		keys(int keycode, void *param)
 {
-	ft_printf("Key code %d\n", keycode);
 	if (keycode == 53 || keycode == 65307)
 		quit_fdf((t_fdf *)param);
 	else if (keycode == 126 || keycode == 65362)

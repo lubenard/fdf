@@ -6,7 +6,7 @@
 #    By: lubenard <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/12 18:13:02 by lubenard          #+#    #+#              #
-#    Updated: 2020/03/04 16:01:58 by lubenard         ###   ########.fr        #
+#    Updated: 2020/03/05 11:57:29 by lubenard         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,6 @@ NAME		= fdf
 LIBFT		= libft
 LIBX_UNIX	= minilibx/X11
 LIBX_SIERRA	= minilibx/sierra
-LIBX_MOJAVE	= minilibx/mojave
 LIBX		= $(LIBX_SIERRA)
 SRCSDIR		= srcs
 INCDIR		= includes
@@ -42,7 +41,6 @@ MAKEFLAGS += --silent
 ##### Cross compil #####
 
 UNIX 		= false
-MOJAVE		= false
 SIERRA		= false
 
 ##### Colors #####
@@ -74,9 +72,6 @@ else ifeq ($(UNIX), true)
  all: $(OBJS) unix_compil
 else ifeq ($(SIERRA), true)
  all: $(OBJS) sierra_compil
-else ifeq ($(MOJAVE), true)
- LIBX = $(LIBX_MOJAVE)
- all: $(OBJS) mojave_compil
 else
  all: $(OBJS) sierra_compil
 endif
@@ -90,11 +85,6 @@ unix_compil:
 	@echo "${_RED}Compiling UNIX minilibx at $(LIBX_UNIX) ${_END}"
 	@make -j4 -C $(LIBX_UNIX)
 	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L $(LIBFT) -lft -L ./$(LIBX_UNIX) -lm -lmlx -lXext -lX11
-
-mojave_compil:
-	@echo "${_RED}Compiling MOJAVE minilibx at $(LIBX_MOJAVE) ${_END}"
-	@make -C $(LIBX_MOJAVE)
-	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L $(LIBFT) -lft -L ./$(LIBX_MOJAVE) -lmlx -framework OpenGL -framework AppKit
 
 sierra_compil:
 	@echo "${_RED}Compiling SIERRA minilibx $(LIBX_SIERRA) ${_END}"
@@ -137,9 +127,6 @@ norm:
 check_error:
 	@grep -rn "printf" srcs/*.c | grep -v "ft_"
 	@grep -rn "stdio.h" srcs/*.c
-
-unix: all
-	@make -q -C $(LIBX_UNIX) || $(MAKE) -C $(LIBX_UNIX)
 
 .PHONY: all clean fclean re norm tests $(LIBFT)
 
