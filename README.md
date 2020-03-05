@@ -1,11 +1,12 @@
 # Fdf
 Create wireframe projection using OpenGl and isometric vue
 
+![Screen Shot 2020-03-04 at 4 46 44 PM](https://user-images.githubusercontent.com/42534397/75975803-79a51e80-5ed9-11ea-9825-e9718d4e89a1.png)
+
 ## How to compile ?
 To compile Fdf, you have to run:
 ```
-make SIERRA=true  // if you are on MacOS Sierra
-make MOJAVE=true  // if you are on MacOs Mojave
+make SIERRA=true  // if you are on MacOS
 make UNIX=true    // if you are on unix system
 make              // By default, make will compile minilibx for Macos Sierra
 ```

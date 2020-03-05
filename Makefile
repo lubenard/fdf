@@ -6,7 +6,7 @@
 #    By: lubenard <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/12 18:13:02 by lubenard          #+#    #+#              #
-#    Updated: 2020/03/05 11:57:29 by lubenard         ###   ########.fr        #
+#    Updated: 2020/03/05 12:00:03 by lubenard         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -83,7 +83,7 @@ $(NAME): $(OBJS)
 
 unix_compil:
 	@echo "${_RED}Compiling UNIX minilibx at $(LIBX_UNIX) ${_END}"
-	@make -j4 -C $(LIBX_UNIX)
+	@make -j4 -C $(LIBX_UNIX) &> /dev/null
 	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L $(LIBFT) -lft -L ./$(LIBX_UNIX) -lm -lmlx -lXext -lX11
 
 sierra_compil:
@@ -111,7 +111,6 @@ fclean: clean
 	@$(MAKE) -C $(LIBFT) fclean
 	@$(MAKE) -C $(LIBX_UNIX) clean
 	@$(MAKE) -C $(LIBX_SIERRA) clean
-	@$(MAKE) -C $(LIBX_MOJAVE) clean
 	@echo -e "${_RED}${_BOLD}Cleaning project...${_END}"
 	@rm -f $(NAME)
 	@rm -rf $(OBJDIR)
