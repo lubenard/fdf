@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "fdf.h"
-
+#include "mlx.h"
 /*
 ** Vue:
 ** 0: iso
@@ -24,6 +24,7 @@ int		change_vue(t_fdf *fdf)
 		fdf->map->vue = 1;
 	else if (fdf->map->vue == 1)
 		fdf->map->vue = 0;
+	mlx_destroy_image(fdf->mlx->mlx_ptr, fdf->mlx->img_ptr);
 	draw(fdf);
 	return (0);
 }
@@ -35,6 +36,7 @@ int		change_vue(t_fdf *fdf)
 int		zoom(t_fdf *fdf, int index)
 {
 	fdf->map->zoom_level += index;
+	mlx_destroy_image(fdf->mlx->mlx_ptr, fdf->mlx->img_ptr);
 	draw(fdf);
 	return (0);
 }
@@ -54,6 +56,7 @@ int		change_alt(t_fdf *fdf, int index)
 			map_tmp->manual_alt += index;
 		map_tmp = map_tmp->next;
 	}
+mlx_destroy_image(fdf->mlx->mlx_ptr, fdf->mlx->img_ptr);
 	draw(fdf);
 	return (0);
 }
@@ -72,6 +75,7 @@ int		move_x(t_fdf *fdf, int index)
 		map_tmp->x += index;
 		map_tmp = map_tmp->next;
 	}
+mlx_destroy_image(fdf->mlx->mlx_ptr, fdf->mlx->img_ptr);
 	draw(fdf);
 	return (0);
 }
@@ -92,6 +96,7 @@ int		move_y(t_fdf *fdf, int index)
 			map_tmp->x += index;
 		map_tmp = map_tmp->next;
 	}
+mlx_destroy_image(fdf->mlx->mlx_ptr, fdf->mlx->img_ptr);
 	draw(fdf);
 	return (0);
 }

@@ -78,9 +78,6 @@ int		init_mlx(t_fdf *fdf)
 		return (1);
 	fdf->mlx->mlx_win = mlx_new_window(fdf->mlx->mlx_ptr, WIN_WIDTH, WIN_HEIGHT,
 	"Fil de fer (aka fdf)");
-	fdf->mlx->img_ptr = mlx_new_image(fdf->mlx->mlx_ptr, WIN_WIDTH, WIN_HEIGHT);
-	fdf->mlx->data = (unsigned int *)mlx_get_data_addr(fdf->mlx->img_ptr,
-	&fdf->mlx->bpp, &fdf->mlx->size_line, &fdf->mlx->endian);
 	mlx_key_hook(fdf->mlx->mlx_win, keys, fdf);
 	return (0);
 }

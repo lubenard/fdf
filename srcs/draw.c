@@ -101,8 +101,10 @@ int		set_image(t_fdf *fdf)
 
 int		draw(t_fdf *fdf)
 {
-	mlx_clear_window(fdf->mlx->mlx_ptr, fdf->mlx->mlx_win);
+	fdf->mlx->img_ptr = mlx_new_image(fdf->mlx->mlx_ptr, WIN_WIDTH, WIN_HEIGHT);
+	fdf->mlx->data = (unsigned int *)mlx_get_data_addr(fdf->mlx->img_ptr,
+	&fdf->mlx->bpp, &fdf->mlx->size_line, &fdf->mlx->endian);
 	set_image(fdf);
-	mlx_destroy_image(fdf->mlx->mlx_ptr, fdf->mlx->data);
+	
 	return (0);
 }
