@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "fdf.h"
-
+#include "mlx.h"
 /*
 ** Used to invert position and store them into t_point struct
 */
@@ -57,10 +57,10 @@ int		free_structs(t_fdf *fdf, int return_code)
 		fdf->map->lst = fdf->map->lst->next;
 		ft_memdel((void **)&tmp_lst);
 	}
+	mlx_destroy_window(fdf->mlx->mlx_ptr, fdf->mlx->mlx_win);
+	mlx_destroy_image(fdf->mlx->mlx_ptr, fdf->mlx->img_ptr);
 	ft_memdel((void**)&fdf->map);
 	ft_memdel(&fdf->mlx->mlx_ptr);
-	ft_memdel(&fdf->mlx->mlx_win);
-	ft_memdel(&fdf->mlx->img_ptr);
 	ft_memdel((void**)&fdf->mlx);
 	ft_memdel((void**)&fdf);
 	return (return_code);
