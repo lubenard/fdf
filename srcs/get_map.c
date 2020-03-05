@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 11:03:08 by lubenard          #+#    #+#             */
-/*   Updated: 2020/03/04 18:01:04 by lubenard         ###   ########.fr       */
+/*   Updated: 2020/03/05 12:51:43 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,6 @@ int		get_map(t_fdf **fdf, int nbr_files, char **files)
 				return (2);
 		(*fdf)->map->height_size = y - 1;
 		close(fd);
-		return (0);
+		return ((y == 0) ? 2 : 0);
 	}
 }

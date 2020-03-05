@@ -6,7 +6,7 @@
 #    By: lubenard <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/12 18:13:02 by lubenard          #+#    #+#              #
-#    Updated: 2020/03/05 12:00:03 by lubenard         ###   ########.fr        #
+#    Updated: 2020/03/05 12:26:15 by lubenard         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -87,7 +87,7 @@ unix_compil:
 	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L $(LIBFT) -lft -L ./$(LIBX_UNIX) -lm -lmlx -lXext -lX11
 
 sierra_compil:
-	@echo "${_RED}Compiling SIERRA minilibx $(LIBX_SIERRA) ${_END}"
+	@echo "${_RED}Compiling SIERRA minilibx at $(LIBX_SIERRA) ${_END}"
 	@make -j4 -C $(LIBX_SIERRA) &> /dev/null
 	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L./$(LIBFT) -lft -L ./$(LIBX_SIERRA) -lmlx -framework OpenGL -framework AppKit
 

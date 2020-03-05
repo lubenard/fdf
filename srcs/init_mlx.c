@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 11:58:55 by lubenard          #+#    #+#             */
-/*   Updated: 2020/03/05 11:32:37 by lubenard         ###   ########.fr       */
+/*   Updated: 2020/03/05 13:35:21 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int		keys(int keycode, void *param)
 		quit_fdf((t_fdf *)param);
 	else if (keycode == 126 || keycode == 65362)
 		move_y((t_fdf *)param, -2);
-	else if (keycode == 125|| keycode == 65364)
+	else if (keycode == 125 || keycode == 65364)
 		move_y((t_fdf *)param, 2);
 	else if (keycode == 123 || keycode == 65361)
 		move_x((t_fdf *)param, -2);
@@ -79,5 +79,8 @@ int		init_mlx(t_fdf *fdf)
 	fdf->mlx->mlx_win = mlx_new_window(fdf->mlx->mlx_ptr, WIN_WIDTH, WIN_HEIGHT,
 	"Fil de fer (aka fdf)");
 	mlx_key_hook(fdf->mlx->mlx_win, keys, fdf);
+	fdf->mlx->img_ptr = mlx_new_image(fdf->mlx->mlx_ptr, WIN_WIDTH, WIN_HEIGHT);
+	fdf->mlx->data = (unsigned int *)mlx_get_data_addr(fdf->mlx->img_ptr,
+	&fdf->mlx->bpp, &fdf->mlx->size_line, &fdf->mlx->endian);
 	return (0);
 }

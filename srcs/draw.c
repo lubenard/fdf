@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 17:38:54 by lubenard          #+#    #+#             */
-/*   Updated: 2020/03/05 11:47:55 by lubenard         ###   ########.fr       */
+/*   Updated: 2020/03/05 13:35:48 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int		fill_pixel(t_fdf *fdf, int color, int y, int x)
 	form = (((WIN_WIDTH * y) + x));
 	if (x > 0 && y > 0 && x < WIN_WIDTH && y < WIN_HEIGHT)
 	{
-		write(1,"", 1);
+		write(1, "", 1);
 		fdf->mlx->data[form] = mlx_get_color_value(fdf->mlx->mlx_ptr, color);
 	}
 	return (0);
@@ -102,9 +102,6 @@ int		set_image(t_fdf *fdf)
 int		draw(t_fdf *fdf)
 {
 	mlx_clear_window(fdf->mlx->mlx_ptr, fdf->mlx->mlx_win);
-	fdf->mlx->img_ptr = mlx_new_image(fdf->mlx->mlx_ptr, WIN_WIDTH, WIN_HEIGHT);
-	fdf->mlx->data = (unsigned int *)mlx_get_data_addr(fdf->mlx->img_ptr,
-	&fdf->mlx->bpp, &fdf->mlx->size_line, &fdf->mlx->endian);
 	set_image(fdf);
 	mlx_destroy_image(fdf->mlx->mlx_ptr, fdf->mlx->data);
 	return (0);
