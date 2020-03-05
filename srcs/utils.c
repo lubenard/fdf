@@ -6,12 +6,13 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 16:40:47 by lubenard          #+#    #+#             */
-/*   Updated: 2020/03/04 11:16:00 by lubenard         ###   ########.fr       */
+/*   Updated: 2020/03/05 15:32:14 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include "mlx.h"
+
 /*
 ** Used to invert position and store them into t_point struct
 */
@@ -57,8 +58,11 @@ int		free_structs(t_fdf *fdf, int return_code)
 		fdf->map->lst = fdf->map->lst->next;
 		ft_memdel((void **)&tmp_lst);
 	}
-	mlx_destroy_window(fdf->mlx->mlx_ptr, fdf->mlx->mlx_win);
-	mlx_destroy_image(fdf->mlx->mlx_ptr, fdf->mlx->img_ptr);
+	if (fdf->mlx->mlx_ptr)
+	{
+		mlx_destroy_window(fdf->mlx->mlx_ptr, fdf->mlx->mlx_win);
+		mlx_destroy_image(fdf->mlx->mlx_ptr, fdf->mlx->img_ptr);
+	}
 	ft_memdel((void**)&fdf->map);
 	ft_memdel(&fdf->mlx->mlx_ptr);
 	ft_memdel((void**)&fdf->mlx);

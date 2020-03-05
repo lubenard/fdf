@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 11:03:08 by lubenard          #+#    #+#             */
-/*   Updated: 2020/03/05 12:51:43 by lubenard         ###   ########.fr       */
+/*   Updated: 2020/03/05 15:23:43 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ int		insert_char(t_map *map, char *lines, size_t x, size_t y)
 		map->last->next = map_elem;
 		map_elem->prev = map->last;
 	}
+	if (ft_strlen(lines) > 11)
+		return (ft_printf("OMG, %s it's too big !...\n", lines));
 	map_elem->alt = ft_atoi(lines);
 	if (map_elem->alt <= -10)
 		map_elem->color = 0x0000FF;
@@ -89,7 +91,8 @@ int		format_line(t_map *map, char *line, int y)
 	map->line_size = map_size_x;
 	while (splitted_line[j])
 	{
-		insert_char(map, splitted_line[j], j, y);
+		if (insert_char(map, splitted_line[j], j, y) != 0)
+			return (1);
 		j++;
 	}
 	ft_2dstrdel(&splitted_line);
