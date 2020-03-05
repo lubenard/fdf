@@ -6,7 +6,7 @@
 /*   By: lubenard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 11:03:08 by lubenard          #+#    #+#             */
-/*   Updated: 2020/03/05 15:23:43 by lubenard         ###   ########.fr       */
+/*   Updated: 2020/03/05 16:01:25 by lubenard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int		format_line(t_map *map, char *line, int y)
 	j = 0;
 	splitted_line = ft_strsplit(line, ' ');
 	map_size_x = ft_2dstrlen(splitted_line);
-	if (y > 0 && map_size_x != (int)map->line_size)
+	if (!ft_strisascii(line) || (y > 0 && map_size_x != (int)map->line_size))
 	{
 		write(2, "Hum, the map seems incorrect...\n", 32);
 		ft_2dstrdel(&splitted_line);
